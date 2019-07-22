@@ -4,4 +4,6 @@ Rails.application.routes.draw do
   resources :asset
   resources :plan
   resources :asset_type
+
+  get '/login', to: '/users#login', as: 'login'
 end

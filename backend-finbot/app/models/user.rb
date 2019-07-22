@@ -33,7 +33,7 @@ class User < ApplicationRecord
     def destroy
         user = User.find(params[:id])
         user.destroy
-        render :show
+        redirect_to(login_path)
     end
 
     private 
