@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  tickerl: MyString
+  shares: 1.5
+  price: 1.5
+  purchase_date: 2019-07-22 11:21:30
+
+two:
+  tickerl: MyString
+  shares: 1.5
+  price: 1.5
+  purchase_date: 2019-07-22 11:21:30
