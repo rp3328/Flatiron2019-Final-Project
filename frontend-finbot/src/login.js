@@ -22,7 +22,6 @@ function showLoginScreen() {
 
     loginForm.addEventListener('submit',function(e) {
         e.preventDefault()
-        debugger
         const username = e.target[0].value
         const password = e.target[1].value
 
