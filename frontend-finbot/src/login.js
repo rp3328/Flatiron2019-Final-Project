@@ -107,32 +107,45 @@ function showSignupPage() {
 
 // brings up a form for creating a financial plan
 function showFinancialPlan(data) {
-    main.innerHTML = `<h1>Signup a new user</h1> 
-    <form id="signup-form">
+    main.innerHTML = `<h1>Setup New Plan</h1> 
+    <form id="plan-form">
         Small Cap Equities: 
-        <input type="number" name="equity_smcap"/><br>
+        <input type="number" step="0.001" name="equity_smcap"/><br>
         Middle Cap Equities: 
-        <input type="number" name="equity_micap"/><br>
+        <input type="number" step="0.001" name="equity_micap"/><br>
         Large Cap Equities: 
-        <input type="number" name="equity_lgcap"/><br>
+        <input type="number" step="0.001" name="equity_lgcap"/><br>
         High Yield Bonds: 
-        <input type="number" name="bond_hy"/><br>
+        <input type="number" step="0.001" name="bond_hy"/><br>
         Low Yield Bonds: 
-        <input type="number" name="bond_ly"/><br>
+        <input type="number" step="0.001" name="bond_ly"/><br>
         Municipal Bonds: 
-        <input type="number" name="bond_muni"/><br>
+        <input type="number" step="0.001" name="bond_muni"/><br>
         Treasury Bonds: 
-        <input type="number" name="bond_t"/><br>
+        <input type="number" step="0.001" name="bond_t"/><br>
         Cash: 
-        <input type="number" name="cash"/><br>
+        <input type="number" step="0.001" name="cash"/><br>
         <input type="submit"/>
     </form>`
 
-    fetch(`${BASE_URL}/users/${data.id}`,{
+    const planForm = document.getElementById('plan-form')
+
+    planForm.addEventListener('submit', function(e){
+        e.preventDefault()
+        const equity_smcap = e.target[0].value
+        const equity_micap = e.target[1].value
+        const equity_lgcap = e.target[2].value
+        const bond_hy  = e.target[3].value
+        const bond_ly = e.target[4].value
+        const bond_muni  = e.target[5].value
+        const bond_t = e.target[6].value
+        const cash  = e.target[7].value
+
+    fetch(`${BASE_URL}/plans`,{
         method: "POST", 
         headers: {
             "Content-Type": 'application/json',
-            Accept: 'application/json'
+            "Accept": 'application/json'
         },
         body: JSON.stringify({
             "equity_smcap": equity_smcap,
@@ -142,19 +155,13 @@ function showFinancialPlan(data) {
             "bond_ly": bond_ly,
             "bond_muni": bond_muni,
             "bond_t": bond_t,
-            "cash": cash
+            "cash": cash,
+            "user_id": data.id
         })
-        
         })
         .then(res => res.json())
-        .then(data => {
-            //render to dashboard
-            showDashboard(data)
-        })
-    
-
-
-    
+        showDashboard(data)
+    })
 }
 // submits the financial plan form
     

@@ -16,9 +16,9 @@ class UsersController < ApplicationController
 
     def create
         user = User.create(user_params)
-        byebug
+        
         if user.valid?
-            plan = Plan.create(user: user)
+            # plan = Plan.create(user: user)
             render json: user
         else
             flash[:error] = user.errors.full_messages
