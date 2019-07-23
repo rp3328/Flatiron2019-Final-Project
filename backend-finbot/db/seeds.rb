@@ -5,3 +5,15 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+
+
+
+AssetType.create(name: "equity_smcap")
+AssetType.create(name: "equity_micap")
+AssetType.create(name: "equity_lgcap")
+AssetType.create(name: "bond_hy")
+AssetType.create(name: "bond_ly")
+AssetType.create(name: "bond_muni")
+AssetType.create(name: "bond_t")
+AssetType.create(name: "cash")
