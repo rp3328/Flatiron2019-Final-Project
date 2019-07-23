@@ -4,6 +4,7 @@
 
 // brings up the user login page
 
+// const main = document.querySelector('main')
 function showLoginScreen() {
     main.innerHTML = ` 
     <form id="login-form">
@@ -22,7 +23,7 @@ function showLoginScreen() {
 
     loginForm.addEventListener('submit',function(e) {
         e.preventDefault()
-        debugger
+        
         const username = e.target[0].value
         const password = e.target[1].value
 
