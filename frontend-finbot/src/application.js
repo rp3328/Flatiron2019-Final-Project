@@ -1,5 +1,5 @@
 const BASE_URL = "http://localhost:3000"
-// const main = document.querySelector('main')
+const main = document.querySelector('main')
 
 document.addEventListener('DOMContentLoaded', function(){
     showLoginScreen()

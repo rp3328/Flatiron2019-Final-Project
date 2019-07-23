@@ -1,5 +1,3 @@
-const main = document.querySelector('main')
-
 function showDashboard(user) {
     main.innerHTML = `<h2>Great job logging in ${user.username}!</h2>
     <button id="logout-button">Logout</button>
@@ -15,7 +13,7 @@ function showDashboard(user) {
     //financial plan view
     const plan = document.getElementById(`financial-plan`)
     plan.innerHTML += `
-    Have some kind of plan graphic here...
+    <canvas id="myChart"></canvas>
     `
     
     //edit financial plan

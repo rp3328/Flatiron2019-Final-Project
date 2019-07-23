@@ -24,9 +24,11 @@ ActiveRecord::Schema.define(version: 2019_07_22_152358) do
     t.float "price"
     t.datetime "purchase_date"
     t.integer "asset_type_id"
+    t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["asset_type_id"], name: "index_assets_on_asset_type_id"
+    t.index ["user_id"], name: "index_assets_on_user_id"
   end
 
   create_table "plans", force: :cascade do |t|

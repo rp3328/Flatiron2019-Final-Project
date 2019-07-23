@@ -39,8 +39,14 @@ function showLoginScreen() {
         .then(res => res.json())
         .then(data => {
             // if the login request is successful
-            localStorage.setItem("user_id", data.id)
-            showDashboard(data)
+           
+            
+            if(!(data.error === null)){
+                showLoginScreen()
+            }else{
+                localStorage.setItem("user_id", data.id)
+                showDashboard(data)
+            }
         })
     }) // ends the eventListener for 'submit'
 
@@ -105,63 +111,3 @@ function showSignupPage() {
 } // ends showSignupPage
 
 
-// brings up a form for creating a financial plan
-function showFinancialPlan(data) {
-    main.innerHTML = `<h1>Setup New Plan</h1> 
-    <form id="plan-form">
-        Small Cap Equities: 
-        <input type="number" step="0.001" name="equity_smcap"/><br>
-        Middle Cap Equities: 
-        <input type="number" step="0.001" name="equity_micap"/><br>
-        Large Cap Equities: 
-        <input type="number" step="0.001" name="equity_lgcap"/><br>
-        High Yield Bonds: 
-        <input type="number" step="0.001" name="bond_hy"/><br>
-        Low Yield Bonds: 
-        <input type="number" step="0.001" name="bond_ly"/><br>
-        Municipal Bonds: 
-        <input type="number" step="0.001" name="bond_muni"/><br>
-        Treasury Bonds: 
-        <input type="number" step="0.001" name="bond_t"/><br>
-        Cash: 
-        <input type="number" step="0.001" name="cash"/><br>
-        <input type="submit"/>
-    </form>`
-
-    const planForm = document.getElementById('plan-form')
-
-    planForm.addEventListener('submit', function(e){
-        e.preventDefault()
-        const equity_smcap = e.target[0].value
-        const equity_micap = e.target[1].value
-        const equity_lgcap = e.target[2].value
-        const bond_hy  = e.target[3].value
-        const bond_ly = e.target[4].value
-        const bond_muni  = e.target[5].value
-        const bond_t = e.target[6].value
-        const cash  = e.target[7].value
-
-    fetch(`${BASE_URL}/plans`,{
-        method: "POST", 
-        headers: {
-            "Content-Type": 'application/json',
-            "Accept": 'application/json'
-        },
-        body: JSON.stringify({
-            "equity_smcap": equity_smcap,
-            "equity_micap": equity_micap,
-            "equity_lgcap": equity_lgcap,
-            "bond_hy": bond_hy,
-            "bond_ly": bond_ly,
-            "bond_muni": bond_muni,
-            "bond_t": bond_t,
-            "cash": cash,
-            "user_id": data.id
-        })
-        })
-        .then(res => res.json())
-        showDashboard(data)
-    })
-}
-// submits the financial plan form
-    

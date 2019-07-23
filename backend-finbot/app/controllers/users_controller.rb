@@ -1,8 +1,6 @@
 class UsersController < ApplicationController
     
-    def new
-        user = User.new(user_params)
-    end
+
 
     def login
         user = User.find_by(username: params[:username])
@@ -31,9 +29,7 @@ class UsersController < ApplicationController
         render json: user
     end
 
-    def edit
-        
-    end
+
 
     def update
         user = User.find(params[:id])
