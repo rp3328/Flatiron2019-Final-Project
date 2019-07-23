@@ -99,13 +99,62 @@ function showSignupPage() {
         .then(data => {
             // if the login request is successful
             localStorage.setItem("user_id", data.id)
-            showDashboard(data)
+            showFinancialPlan(data)
         })
     }) // ends the eventListener for submitting new user data
 } // ends showSignupPage
 
 
 // brings up a form for creating a financial plan
+function showFinancialPlan(data) {
+    main.innerHTML = `<h1>Signup a new user</h1> 
+    <form id="signup-form">
+        Small Cap Equities: 
+        <input type="number" name="equity_smcap"/><br>
+        Middle Cap Equities: 
+        <input type="number" name="equity_micap"/><br>
+        Large Cap Equities: 
+        <input type="number" name="equity_lgcap"/><br>
+        High Yield Bonds: 
+        <input type="number" name="bond_hy"/><br>
+        Low Yield Bonds: 
+        <input type="number" name="bond_ly"/><br>
+        Municipal Bonds: 
+        <input type="number" name="bond_muni"/><br>
+        Treasury Bonds: 
+        <input type="number" name="bond_t"/><br>
+        Cash: 
+        <input type="number" name="cash"/><br>
+        <input type="submit"/>
+    </form>`
 
+    fetch(`${BASE_URL}/users/${data.id}`,{
+        method: "POST", 
+        headers: {
+            "Content-Type": 'application/json',
+            Accept: 'application/json'
+        },
+        body: JSON.stringify({
+            "equity_smcap": equity_smcap,
+            "equity_micap": equity_micap,
+            "equity_lgcap": equity_lgcap,
+            "bond_hy": bond_hy,
+            "bond_ly": bond_ly,
+            "bond_muni": bond_muni,
+            "bond_t": bond_t,
+            "cash": cash
+        })
+        
+        })
+        .then(res => res.json())
+        .then(data => {
+            //render to dashboard
+            showDashboard(data)
+        })
+    
+
+
+    
+}
 // submits the financial plan form
     
