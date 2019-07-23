@@ -9,6 +9,7 @@ class CreatePlans < ActiveRecord::Migration[5.2]
       t.float :bond_muni
       t.float :bond_t
       t.float :cash
+      t.references :user, foreign_key: true
 
       t.timestamps
     end

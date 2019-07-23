@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 2019_07_22_152358) do
   end
 
   create_table "assets", force: :cascade do |t|
-    t.string "tickerl"
+    t.string "ticker"
     t.float "shares"
     t.float "price"
     t.datetime "purchase_date"
@@ -38,15 +38,18 @@ ActiveRecord::Schema.define(version: 2019_07_22_152358) do
     t.float "bond_muni"
     t.float "bond_t"
     t.float "cash"
+    t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_plans_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
-    t.string "user_id"
+    t.string "username"
     t.integer "age"
+    t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

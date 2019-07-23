@@ -5,5 +5,5 @@ Rails.application.routes.draw do
   resources :plan
   resources :asset_type
 
-  get '/login', to: '/users#login', as: 'login'
+  get '/login', to: 'users#login'
 end
