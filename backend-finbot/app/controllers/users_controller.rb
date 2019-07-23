@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
     
     def new
-
+        user = User.new(user_params)
     end
 
     def login
@@ -27,6 +27,8 @@ class UsersController < ApplicationController
     end
 
     def show
+        user = User.find(params[:id])
+        render json: user
     end
 
     def edit
@@ -47,7 +49,7 @@ class UsersController < ApplicationController
 
     private 
     def user_params
-        params.require(:user).permit(:first_name, :last_name, :username, :age, :password, :password_confirmation)
+        params.permit(:first_name, :last_name, :username, :age, :password, :password_confirmation)
     end
 
 end

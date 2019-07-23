@@ -4,6 +4,7 @@
 
 // brings up the user login page
 
+// const main = document.querySelector('main')
 function showLoginScreen() {
     main.innerHTML = ` 
     <form id="login-form">
