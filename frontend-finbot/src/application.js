@@ -3,7 +3,7 @@ const main = document.querySelector('main')
 
 document.addEventListener('DOMContentLoaded', function(){
     showLoginScreen()
-    if(localStorage.getItem('user_id')) {
+    if(typeof(parseInt(localStorage.getItem('user_id'))) === "integer") {
         // if the user ID is found, that means we've logged in
         const userId = localStorage.getItem('user_id')
 

@@ -17,6 +17,7 @@ function showLoginScreen() {
     <button id="signup-button">Sign Up</button>
     `
 
+    localStorage.clear()
     // submits username and password for logging in through a POST request to /users
     const loginForm = document.getElementById('login-form')
     const signupButton = document.getElementById('signup-button')
@@ -41,7 +42,7 @@ function showLoginScreen() {
             // if the login request is successful
            
             
-            if(!(data.error === null)){
+            if(!(data.error == null)){
                 showLoginScreen()
             }else{
                 localStorage.setItem("user_id", data.id)

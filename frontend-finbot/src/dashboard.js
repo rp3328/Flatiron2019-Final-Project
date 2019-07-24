@@ -12,13 +12,20 @@ function showDashboard() {
     fetch(`${BASE_URL}/users/${localStorage.user_id}/getValue`)
     .then(res => res.json())
     .then(data => {
-      debugger
+      const assetsChart = new Chart(chartContainer, {
+        type: 'line',
+        data: data,
+        options: {
+          scales: {
+              yAxes: [{
+                  stacked: true
+              }]
+          }
+        }
+      })
+  
     })
-    // const assetsChart = new Chart(chartContainer, {
-    //   type: 'line',
-    //   data: data
-    // })
-
+    
     //logout functionality
     const logoutButton = document.getElementById(`logout-button`)
     logoutButton.addEventListener('click', function(e){
