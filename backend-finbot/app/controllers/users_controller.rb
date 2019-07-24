@@ -36,13 +36,16 @@ class UsersController < ApplicationController
 
     # returns an array. first element of the array is the interval dates (for the chart x-axis)
     # each element of the array is an array representing an assetType. It shows the total holdings of that assetType at the interval date
-        byebug
+        # byebug
     end
 
     def update
         user = User.find(params[:id])
-        user.update(user_params)
-        render :show
+        if user.update(user_params)
+            render json: user
+        else
+            render json: user
+        end
     end
 
     def destroy

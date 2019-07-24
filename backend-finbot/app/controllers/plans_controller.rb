@@ -16,10 +16,20 @@ class PlansController < ApplicationController
         render json: plan
     end
 
+    def update
+        plan = Plan.find(params[:id])
+        if plan.update(plan_params)
+            render json: plan
+        else
+            render json: plan
+        end
+    end
+
 
     private 
     def plan_params
-        params.permit(:equity_smcap, :equity_micap, :equity_lgcap, :bond_hy, :bond_ly, :bond_muni, :bond_t, :cash, :user_id)
+        params.require(:plan).permit(:equity_smcap, :equity_micap, :equity_lgcap, :bond_hy, :bond_ly, :bond_muni, :bond_t, :cash, :user_id)
     end
+
 
 end
