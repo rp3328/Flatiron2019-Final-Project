@@ -1,5 +1,5 @@
 // brings up a form for creating a financial plan
-function showFinancialPlan(data) {
+function showFinancialPlan() {
     main.innerHTML = `<h1>Setup New Plan</h1>
     <form id="plan-form">
         Small Cap Equities:
@@ -46,16 +46,18 @@ function showFinancialPlan(data) {
             "bond_muni": bond_muni,
             "bond_t": bond_t,
             "cash": cash,
-            "user_id": data.id
+            "user_id": localStorage.user_id
         })
         })
         .then(res => res.json())
-        showAssets(data)
+        inputAssets()
     })
  }
     
 
-function showAssets(data){
+function inputAssets(){
+
+    
     main.innerHTML = `<h1>Setup New Plan</h1> 
     <form id="asset-form">
         Ticker: 
@@ -67,13 +69,32 @@ function showAssets(data){
         Purchase Date: 
         <input type="datetime" step="0.001" name="purchase_date"/><br>
         Asset Type: 
-        <input type="number" step="1" name="asset_type"/><br>
+        <select name="asset_type" >
+            <option value="equity_smcap">equity_smcap</option>
+            <option value="equity_micap">equity_micap</option>
+            <option value="equity_lgcap">equity_lgcap</option>
+            <option value="bond_hy">bond_hy</option>
+            <option value="bond_ly">bond_ly</option>
+            <option value="bond_muni">bond_muni</option>
+            <option value="bond_t">bond_t</option>
+            <option value="cash">cash</option>
+        </select><br>
         <input type="submit"/>
-    </form>`
-
-
+    </form>
+    <button id="assets-done">Finished adding assets</button>
+    <br>
+        
+    <table id="assets-table">
+    <tr>
+    <th>Ticker symbol</th>
+    <th>Number of shares</th>
+    <th>Purchase price per share</th>
+    </tr>
+    
+    </table>`
 
     const assetForm = document.getElementById("asset-form")
+    const assetsTable = document.getElementById("assets-table")
 
     // submits the financial plan form
     assetForm.addEventListener('submit', function(e){
@@ -82,7 +103,7 @@ function showAssets(data){
         const shares = e.target[1].value
         const price = e.target[2].value
         const purchase_date  = e.target[3].value
-        const asset_type_id = e.target[4].value
+        const asset_type = e.target[4].value
 
         fetch(`${BASE_URL}/assets`,{
             method: "POST", 
@@ -95,12 +116,25 @@ function showAssets(data){
                 "shares": shares,
                 "price": price,
                 "purchase_date": purchase_date,
-                "asset_type_id": asset_type_id,
-                "user_id": data.id
+                "asset_type": asset_type,
+                "user_id": localStorage.user_id
             })
             })
             .then(res => res.json())
-            
-        showDashboard(data)
+            .then(asset => {
+
+                // rewrite the DOM 'assets-table' to include the asset
+                assetsTable.innerHTML += `
+                <tr>
+                    <td>${asset.ticker}</td>
+                    <td>${asset.shares}</td>
+                    <td>${asset.price}</td>`
+            })            
+    })// ends the 'submit' eventListener on the asset form
+
+    // when the user is finished adding assets, take them to their dashboard
+    const finishedAssetsButton = document.getElementById("assets-done")
+    finishedAssetsButton.addEventListener('click', function(e) {
+        showDashboard()
     })
 }
