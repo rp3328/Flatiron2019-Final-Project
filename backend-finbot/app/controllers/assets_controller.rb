@@ -1,14 +1,9 @@
 class AssetsController < ApplicationController
-    
-    def new
-        # asset = Asset.new(asset_params)
-    end
-
 
     def create
-        asset = Asset.create(asset_params)
+        asset_type_id = AssetType.find_by(name: params[:asset_type]).id
+        asset = Asset.create(ticker: params[:ticker], shares: params[:shares], price: params[:price], purchase_date: params[:purchase_date], user_id: params[:user_id], asset_type_id: asset_type_id)
         render json: asset
-
     end
 
     def show
@@ -16,15 +11,9 @@ class AssetsController < ApplicationController
         render json: asset
     end
 
-    #total assets per user
-    def getValue
-        assets = Asset.
-        
-    end
-
     private 
     def asset_params
-        params.permit(:ticker, :shares, :price, :purchase_date, :asset_type_id, :user_id)
+        params.permit(:ticker, :shares, :price, :purchase_date, :asset_type, :user_id)
     end
 
 end

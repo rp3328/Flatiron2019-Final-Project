@@ -6,4 +6,5 @@ Rails.application.routes.draw do
   resources :asset_types
 
   post '/login', to: 'users#login'
+  get '/users/:id/getValue', to: 'users#getValue', as: 'user_id'
 end
