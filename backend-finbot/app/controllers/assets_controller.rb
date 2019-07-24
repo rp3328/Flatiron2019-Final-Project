@@ -11,6 +11,12 @@ class AssetsController < ApplicationController
         render json: asset
     end
 
+    def destroy
+        asset = Asset.find(params[:id])
+        asset.destroy
+        render json: asset
+    end
+
     private 
     def asset_params
         params.permit(:ticker, :shares, :price, :purchase_date, :asset_type, :user_id)

@@ -39,9 +39,7 @@ function showLoginScreen() {
         .then(res => res.json())
         .then(data => {
             // if the login request is successful
-           
-            
-            if(!(data.error === null)){
+            if(!(data.error == null)){
                 showLoginScreen()
             }else{
                 localStorage.setItem("user_id", data.id)
