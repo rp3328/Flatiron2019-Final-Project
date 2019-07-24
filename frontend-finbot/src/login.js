@@ -45,7 +45,7 @@ function showLoginScreen() {
                 showLoginScreen()
             }else{
                 localStorage.setItem("user_id", data.id)
-                showDashboard(data)
+                showDashboard()
             }
         })
     }) // ends the eventListener for 'submit'
@@ -105,7 +105,7 @@ function showSignupPage() {
         .then(data => {
             // if the login request is successful
             localStorage.setItem("user_id", data.id)
-            showFinancialPlan(data)
+            showFinancialPlan()
         })
     }) // ends the eventListener for submitting new user data
 } // ends showSignupPage
