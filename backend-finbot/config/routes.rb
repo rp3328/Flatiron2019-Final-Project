@@ -6,5 +6,7 @@ Rails.application.routes.draw do
   resources :asset_types
 
   post '/login', to: 'users#login'
-  get '/users/:id/getValue', to: 'users#getValue', as: 'user_id'
+  get '/users/:id/getValue', to: 'users#get_value', as: 'user_id'
+
+  post '/get_access_token', to: 'users#get_token'
 end
