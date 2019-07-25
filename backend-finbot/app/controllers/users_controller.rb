@@ -35,57 +35,35 @@ class UsersController < ApplicationController
     def getValue
         user_id = params[:id].to_i
         iex_api_key = Figaro.env.iex_api_key
+        iex_url = 'https://cloud.iexapis.com/stable/stock'
+        return_hash = Hash.new
+        return_hash[:datasets] = []
         
         # get all the user's assets
         user_assets = Asset.all.select do |asset|
             asset.user_id == user_id
         end
-
-        # currently, have a default 5-year timeframe
-        yesterday = Date.today - 1
-        date_array = Array.new
-        for i in 0..24 do
-        date_array[i] = yesterday-(30*i)
-        date_array[i] = date_array[i].strftime("%Y%m%d")
-        end
         
-        return_hash = Hash.new
-        return_hash[:labels] = date_array
-        return_hash[:datasets] = []
-
         user_assets.each do |asset|
-            new_asset = Hash.new
-            return_hash[:datasets].push(new_asset)
-            active_asset_index = return_hash[:datasets].length - 1
-            
-            date_array.each do |date|
-                request_status = false
-                while request_status == false do
-                    uri = ""
-                    iex_url = "https://cloud.iexapis.com/stable/stock"
-                    
-                    uri = URI.parse(iex_url.concat("/#{asset.ticker}/chart/date/#{date}?chartByDay=true&token=#{iex_api_key}"))
-                    response = Net::HTTP.get_response(uri)
-                    if response.header.kind_of?(Net::HTTPOK) && JSON.parse(response.body).length != 0
-                        return_hash[:datasets][active_asset_index][:label] = asset.ticker
-                        if !(return_hash[:datasets][active_asset_index][:data])
-                            return_hash[:datasets][active_asset_index][:data] = [] # creates a new data array if one does not exist
-                        end
-                        share_price = JSON.parse(response.body)[0]["close"]
-                        return_hash[:datasets][active_asset_index][:data].push(share_price * asset.shares)
-                        request_status = true
+            active_asset_index = return_hash[:datasets].length
+            uri = URI.parse(iex_url.dup.concat("/#{asset.ticker}/chart/5y?chartCloseOnly=true&chartInterval=60&token=#{iex_api_key}"))
+            response = Net::HTTP.get_response(uri)
+            if response.header.kind_of?(Net::HTTPOK) && JSON.parse(response.body).length != 0
+                data = JSON.parse(response.body)    
+                return_hash[:datasets].push(Hash.new)
+                return_hash[:datasets][active_asset_index][:label] = asset.ticker
+                return_hash[:datasets][active_asset_index][:data] = data.map do |day| 
+                    if day["date"].to_datetime > asset.purchase_date
+                        day["close"] * asset.shares
                     else
-                        date = (date.to_datetime - 1).strftime("%Y%m%d")
+                        0
                     end
                 end
+                return_hash[:labels] = data.map {|day| day["date"].gsub('-','')}
             end
         end
-        # reverse order before feeding into chart.js to have the most recent values to the right
-        return_hash[:labels] = return_hash[:labels].reverse
-        return_hash[:datasets].each do |asset|
-            asset[:data] = asset[:data].reverse
-        end
-        render json: return_hash
+            byebug
+            render json: return_hash
     end
 
     def update
