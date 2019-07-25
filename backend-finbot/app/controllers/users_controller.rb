@@ -28,7 +28,7 @@ class UsersController < ApplicationController
 
     def show
         user = User.find(params[:id])
-        render json: user
+        render json: user, include: [:assets]
     end
 
     #gets a hash of prices for the user's assets at points in the past
@@ -90,8 +90,11 @@ class UsersController < ApplicationController
 
     def update
         user = User.find(params[:id])
-        user.update(user_params)
-        render :show
+        if user.update(user_params)
+            render json: user, include: [:assets]
+        else
+            render json: user, include: [:assets]
+        end
     end
 
     def destroy
