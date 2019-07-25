@@ -41,12 +41,11 @@ class UsersController < ApplicationController
             asset.user_id == user_id
         end
 
-        # determine the date range by the earliest dated asset
         # currently, have a default 5-year timeframe
         yesterday = Date.today - 1
         date_array = Array.new
-        for i in 0..4 do
-        date_array[i] = yesterday-(365*i)
+        for i in 0..24 do
+        date_array[i] = yesterday-(30*i)
         date_array[i] = date_array[i].strftime("%Y%m%d")
         end
         
@@ -54,15 +53,11 @@ class UsersController < ApplicationController
         return_hash[:labels] = date_array
         return_hash[:datasets] = []
 
-        # return_array = Array.new
-        # return_array[0] = date_array
-
-        # returns an array. first element of the array is the interval dates (for the chart x-axis)
-        # each element of the array is an array representing an asset. It shows the total holdings of that asset at the interval date
         user_assets.each do |asset|
             new_asset = Hash.new
             return_hash[:datasets].push(new_asset)
             active_asset_index = return_hash[:datasets].length - 1
+            
             date_array.each do |date|
                 request_status = false
                 while request_status == false do
@@ -76,13 +71,19 @@ class UsersController < ApplicationController
                         if !(return_hash[:datasets][active_asset_index][:data])
                             return_hash[:datasets][active_asset_index][:data] = [] # creates a new data array if one does not exist
                         end
-                        return_hash[:datasets][active_asset_index][:data].push(JSON.parse(response.body)[0]["close"])
+                        share_price = JSON.parse(response.body)[0]["close"]
+                        return_hash[:datasets][active_asset_index][:data].push(share_price * asset.shares)
                         request_status = true
                     else
                         date = (date.to_datetime - 1).strftime("%Y%m%d")
                     end
                 end
             end
+        end
+        # reverse order before feeding into chart.js to have the most recent values to the right
+        return_hash[:labels] = return_hash[:labels].reverse
+        return_hash[:datasets].each do |asset|
+            asset[:data] = asset[:data].reverse
         end
         render json: return_hash
     end
