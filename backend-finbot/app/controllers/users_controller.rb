@@ -36,8 +36,8 @@ class UsersController < ApplicationController
         user_id = params[:id].to_i
         iex_api_key = Figaro.env.iex_api_key
         iex_url = 'https://cloud.iexapis.com/stable/stock'
-        return_hash = Hash.new
-        return_hash[:datasets] = []
+        asset_value_hash = Hash.new
+        asset_value_hash[:datasets] = []
         
         # get all the user's assets
         user_assets = Asset.all.select do |asset|
@@ -45,25 +45,24 @@ class UsersController < ApplicationController
         end
         
         user_assets.each do |asset|
-            active_asset_index = return_hash[:datasets].length
+            active_asset_index = asset_value_hash[:datasets].length
             uri = URI.parse(iex_url.dup.concat("/#{asset.ticker}/chart/5y?chartCloseOnly=true&chartInterval=60&token=#{iex_api_key}"))
             response = Net::HTTP.get_response(uri)
             if response.header.kind_of?(Net::HTTPOK) && JSON.parse(response.body).length != 0
                 data = JSON.parse(response.body)    
-                return_hash[:datasets].push(Hash.new)
-                return_hash[:datasets][active_asset_index][:label] = asset.ticker
-                return_hash[:datasets][active_asset_index][:data] = data.map do |day| 
+                asset_value_hash[:datasets].push(Hash.new)
+                asset_value_hash[:datasets][active_asset_index][:label] = asset.ticker
+                asset_value_hash[:datasets][active_asset_index][:data] = data.map do |day| 
                     if day["date"].to_datetime > asset.purchase_date
                         day["close"] * asset.shares
                     else
                         0
                     end
                 end
-                return_hash[:labels] = data.map {|day| day["date"].gsub('-','')}
+                asset_value_hash[:labels] = data.map {|day| day["date"].gsub('-','')}
             end
         end
-            byebug
-            render json: return_hash
+            render json: asset_value_hash
     end
 
     def update
