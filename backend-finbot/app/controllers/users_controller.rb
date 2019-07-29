@@ -8,7 +8,7 @@ class UsersController < ApplicationController
         user = User.find_by(username: params[:username])
 
         if user && user.authenticate(params[:password])
-            render json: user
+            render json: user, include: [:plan, :actions]
         else
             render json: { error: "We cannot recognize this username/password combination" }, status: 401
         end
@@ -28,7 +28,7 @@ class UsersController < ApplicationController
 
     def show
         user = User.find(params[:id])
-        render json: user, include: [:assets]
+        render json: user, include: [:assets, :plan, :actions]
     end
 
     #gets a hash of prices for the user's assets at points in the past
@@ -68,9 +68,9 @@ class UsersController < ApplicationController
     def update
         user = User.find(params[:id])
         if user.update(user_params)
-            render json: user, include: [:assets]
+            render json: user, include: [:assets, :plan, :actions]
         else
-            render json: user, include: [:assets]
+            render json: user, include: [:assets, :plan, :actions]
         end
     end
 

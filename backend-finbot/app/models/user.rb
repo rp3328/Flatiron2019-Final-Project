@@ -5,7 +5,7 @@ class User < ApplicationRecord
     has_many :actions
 
     has_secure_password validations:false
-    #validations:false
+  
     validates :first_name, :last_name, :username, presence: true
     validates :first_name, :last_name, :username, uniqueness: true
     

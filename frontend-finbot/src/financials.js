@@ -81,7 +81,7 @@ function inputAssets(){
             <option value="bond_ly">bond_ly</option>
             <option value="bond_muni">bond_muni</option>
             <option value="bond_t">bond_t</option>
-            <option value="cash">cash</option>
+            <option value="cash">ca\sh</option>
         </select><br>
         <input type="submit"/>
     </form>
@@ -142,3 +142,4 @@ function inputAssets(){
         showDashboard()
     })
 }
+
