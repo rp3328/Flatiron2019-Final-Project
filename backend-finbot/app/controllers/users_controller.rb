@@ -31,38 +31,40 @@ class UsersController < ApplicationController
         render json: user, include: [:assets]
     end
 
-    #gets a hash of prices for the user's assets at points in the past
     def get_value
         user_id = params[:id].to_i
-        iex_api_key = Figaro.env.iex_api_key
-        iex_url = 'https://cloud.iexapis.com/stable/stock'
-        asset_value_hash = Hash.new
-        asset_value_hash[:datasets] = []
+        return_hash = Hash.new
+        return_hash[:labels] = []
+        return_hash[:datasets] = [{}]
+        return_hash[:datasets][0][:label] = "Asset Allocation ($)"
+        return_hash[:datasets][0][:backgroundColor] = []
+        return_hash[:datasets][0][:data] = []
+        
         
         # get all the user's assets
         user_assets = Asset.all.select do |asset|
             asset.user_id == user_id
         end
-        
+
+        # update every asset's closing price
         user_assets.each do |asset|
-            active_asset_index = asset_value_hash[:datasets].length
-            uri = URI.parse(iex_url.dup.concat("/#{asset.ticker}/chart/5y?chartCloseOnly=true&chartInterval=60&token=#{iex_api_key}"))
-            response = Net::HTTP.get_response(uri)
-            if response.header.kind_of?(Net::HTTPOK) && JSON.parse(response.body).length != 0
-                data = JSON.parse(response.body)    
-                asset_value_hash[:datasets].push(Hash.new)
-                asset_value_hash[:datasets][active_asset_index][:label] = asset.ticker
-                asset_value_hash[:datasets][active_asset_index][:data] = data.map do |day| 
-                    if day["date"].to_datetime > asset.purchase_date
-                        day["close"] * asset.shares
-                    else
-                        0
-                    end
-                end
-                asset_value_hash[:labels] = data.map {|day| day["date"].gsub('-','')}
-            end
+            asset.update_close_price
         end
-            render json: asset_value_hash
+
+        # total all the positions by Asset Type
+        grouping = user_assets.group_by do |asset|
+            asset.asset_type
+        end
+        
+        grouping.each do |asset_type, user_assets_array|
+            asset_type_total = user_assets_array.reduce(0) do |sum, asset|
+                sum + (asset.quantity * asset.close_price)
+            end
+            return_hash[:labels].push(asset_type.name)
+            return_hash[:datasets][0][:data].push(asset_type_total)
+            return_hash[:datasets][0][:backgroundColor].push("#".concat(SecureRandom.hex(3)))
+            end            
+        render json: return_hash
     end
 
     def update
@@ -97,29 +99,27 @@ class UsersController < ApplicationController
         investments = client.investments.holdings.get(access_token)
         securities = investments['securities']
         holdings = investments['holdings']
-        byebug
         
-        # holdings.each do |holding|
-        #     security = securities.find do |sec|
-        #         sec.security_id == holding.security_id
-        #     end
-        #     Asset.create(
-        #         ticker: security.ticker_symbol,
-        #         shares: holding.quantity,
-        #         price: holding.institution_price,
-        #         purchase_date: ,
-        #         asset_type_id: ,
-        #         user_id: 
-        #     )
-
-
-
-        # render json: {}
+        holdings.each do |holding|
+            security = securities.find do |sec|
+                sec.security_id == holding.security_id
+            end
+            Asset.create(
+                ticker_symbol: security["ticker_symbol"],
+                name: security["name"],
+                quantity: holding["quantity"],
+                close_price: security["close_price"],
+                cost_basis: holding["cost_basis"],
+                asset_type_id: AssetType.find_by(name: security["type"]).id,
+                user_id: params["user_id"]
+            )
+        end
+        render json: {}
     end
 
     private 
     def user_params
-        params.permit(:first_name, :last_name, :username, :age, :password, :password_confirmation)
+        params.permit(:first_name, :last_name, :username, :email, :telephone, :age, :password, :password_confirmation)
     end
 
 end

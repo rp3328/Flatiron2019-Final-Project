@@ -74,17 +74,9 @@ function showDashboard() {
     .then(res => res.json())
     .then(data => {
       const assetsChart = new Chart(chartContainer, {
-        type: 'line',
-        data: data,
-        options: {
-          scales: {
-              yAxes: [{
-                  stacked: true
-              }]
-          }
-        }
+        type: 'pie',
+        data: data
       })
-  
     })
     
     //logout functionality
@@ -112,7 +104,6 @@ function showDashboard() {
     // link button
     const linkButton = document.getElementById('link-button')
     linkButton.addEventListener('click', plaidOpenHandler)
-
 
     //view user data
     const viewButton = document.getElementById('profile-button')
