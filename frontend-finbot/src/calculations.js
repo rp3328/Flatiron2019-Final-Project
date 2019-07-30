@@ -122,7 +122,15 @@ function calType(assets){
   }
 
   function solution(result){
-      console.log(result)
     
+    // Object.keys(futurePlan).forEach(function(key){
+    //   if(futurePlan[key] < 0)
+    // })
+      delete result["id"]
+      delete result["user_id"]
+      delete result["created_at"]
+      delete result["updated_at"]
+      console.log(result)
+      return result
   }
 

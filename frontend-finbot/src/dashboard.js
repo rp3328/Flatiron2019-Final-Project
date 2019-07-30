@@ -136,15 +136,16 @@ function showDashboard() {
       let iplan = idealPlan(data.plan, totMon)
 
       let comResult = compare(allohash, data.plan)
-      console.log(comResult)
-      solution(comResult)
+      // console.log(comResult)
+      let result = solution(comResult)
+      // console.log(result)
 
       actionDiv.innerHTML += `<h4>Possible Actions:</h4>`
       //create list with id=actionList
       ul = document.createElement('ul')
       ul.setAttribute("id", "actionList")
       actionDiv.appendChild(ul)
-      console.log(actionDiv)
+      // console.log(actionDiv)
 
       //add individual elements for ul
       // let li = document.createElement('li')
@@ -155,10 +156,11 @@ function showDashboard() {
         console.log(key, comResult[key])
         let li = document.createElement('li')
         if (comResult[key] > 0){
-          li.appendChild(document.createTextNode(`${key}: buy ${comResult[key]} more`))
+          li.appendChild(document.createTextNode(`${key}: buy $${comResult[key]} more`))
           ul.appendChild(li);
         } else if(comResult[key] < 0 ){
-          li.appendChild(document.createTextNode(`${key}: sell ${comResult[key]} more`))
+          comResult[key] = Math.abs(comResult[key])
+          li.appendChild(document.createTextNode(`${key}: sell $${comResult[key]} more`))
           ul.appendChild(li);
         } else {
           li.appendChild(document.createTextNode(`${key}: do nothing`))
