@@ -7,6 +7,8 @@ function viewProfile(){
         main.innerHTML = `
         <h1> Username: ${data.username}</h1>
         <h2> FullName: ${data.first_name} ${data.last_name}</h2>
+        <h2> Email: ${data.email}</h2>
+        <h2> Telephone: ${data.telephone}</h2>
         <h2> Age: ${data.age}</h2>
         <button id="back-dashboard"> DashBoard</button>
         <button id="edit-profile"> Edit Profile </button>
@@ -97,6 +99,10 @@ function editProfile(){
         <input type="text" name="last_name"/><br>
         Username: 
         <input type="text" name="username"/><br>
+        Email: 
+        <input type="text" name="email"/><br>
+        Telephone: 
+        <input type="text" name="telephone"/><br>
         Age: 
         <input type="number" name="age"/><br>
         Password: 
@@ -114,9 +120,11 @@ function editProfile(){
         const first_name = e.target[0].value
         const last_name = e.target[1].value
         const username = e.target[2].value
-        const age  = e.target[3].value
-        const password = e.target[4].value
-        const password_confirmation  = e.target[5].value
+        const email = e.target[3].value
+        const telephone = e.target[4].value
+        const age  = e.target[5].value
+        const password = e.target[6].value
+        const password_confirmation  = e.target[7].value
 
         //checks if password was altered
         let verhash = {}
@@ -125,11 +133,15 @@ function editProfile(){
             verhash = {"first_name": first_name,
             "last_name": last_name,
             "username": username,
+            "email": email,
+            "telephone": telephone,
             "age": age}
         } else { 
             verhash = {"first_name": first_name,
             "last_name": last_name,
             "username": username,
+            "email": email,
+            "telephone": telephone,
             "age": age,
             "password": password,
             "password_confirmation": password_confirmation}
@@ -157,23 +169,17 @@ function editAssets(){
     main.innerHTML = `<h1>Edit Assets</h1> 
     <form id="asset-form">
         Ticker: 
-        <input type="text" step="0.001" name="ticker"/><br>
-        Shares: 
-        <input type="number" step="0.001" name="shares"/><br>
-        Price: 
-        <input type="number" step="0.001" name="price"/><br>
-        Purchase Date: 
-        <input type="datetime" step="0.001" name="purchase_date"/><br>
+        <input type="text" step="0.001" name="ticker_symbol"/><br>
+        Name: 
+        <input type="text" step="0.001" name="name"/><br>
+        Number of shares: 
+        <input type="number" step="0.001" name="quantity"/><br>
+        Purchase price per share: 
+        <input type="number" step="0.001" name="cost_basis_per_share"/><br>
+        
         Asset Type: 
         <select name="asset_type" >
-            <option value="cash">cash</option>
-            <option value="derivative">derivative</option>
             <option value="equity">equity</option>
-            <option value="etf">ETF</option>
-            <option value="fixed_income">fixed_income</option>
-            <option value="loan">loan</option>
-            <option value="mutual_fund">mutual_fund</option>
-            <option value="other">other</option>
         </select><br>
         <input type="submit"/>
     </form>
@@ -183,6 +189,7 @@ function editAssets(){
     <table id="assets-table">
     <tr>
     <th>Ticker symbol</th>
+    <th>Name</th>
     <th>Number of shares</th>
     <th>Purchase price per share</th>
     </tr>
@@ -199,20 +206,22 @@ function editAssets(){
         const user_assets = data.assets
         user_assets.forEach(asset => {assetsTable.innerHTML += `
         <tr>
-            <td>${asset.ticker}</td>
-            <td>${asset.shares}</td>
-            <td>${asset.price}</td>
-            <td><button id="editbtn" data-id=${asset.id}>edit</button></td>`
+            <td>${asset.ticker_symbol}</td>
+            <td>${asset.name}</td>
+            <td>${asset.quantity}</td>
+            <td>${asset.cost_basis/asset.quantity}</td>
+            <td><button id="editbtn" data-id=${asset.id}>edit</button></td>
+        </tr>`
         })
     })
 
-    // submits the financial plan form
+
     assetForm.addEventListener('submit', function(e){
         e.preventDefault()
-        const ticker = e.target[0].value
-        const shares = e.target[1].value
-        const price = e.target[2].value
-        const purchase_date  = e.target[3].value
+        const ticker_symbol = e.target[0].value
+        const name = e.target[1].value
+        const quantity = e.target[2].value
+        const cost_basis = e.target[3].value * quantity
         const asset_type = e.target[4].value
 
         fetch(`${BASE_URL}/assets`,{
@@ -222,10 +231,10 @@ function editAssets(){
                 "Accept": 'application/json'
             },
             body: JSON.stringify({
-                "ticker": ticker,
-                "shares": shares,
-                "price": price,
-                "purchase_date": purchase_date,
+                "ticker_symbol": ticker_symbol,
+                "name": name,
+                "quantity": quantity,
+                "cost_basis": cost_basis,
                 "asset_type": asset_type,
                 "user_id": localStorage.user_id
             })
@@ -236,9 +245,9 @@ function editAssets(){
                 // rewrite the DOM 'assets-table' to include the asset
                 assetsTable.innerHTML += `
                 <tr>
-                    <td>${asset.ticker}</td>
-                    <td>${asset.shares}</td>
-                    <td>${asset.price}</td>
+                    <td>${asset.ticker_symbol}</td>
+                    <td>${asset.quantity}</td>
+                    <td>${asset.cost_basis/asset.quantity}</td>
                     <td><button id="editbtn" data-id=${asset.id}>edit</button></td>`
             })
     })// ends the 'submit' eventListener on the asset form

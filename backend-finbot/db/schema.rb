@@ -29,10 +29,11 @@ ActiveRecord::Schema.define(version: 2019_07_29_154011) do
   end
 
   create_table "assets", force: :cascade do |t|
-    t.string "ticker"
-    t.float "shares"
-    t.float "price"
-    t.datetime "purchase_date"
+    t.string "ticker_symbol"
+    t.string "name"
+    t.float "quantity"
+    t.float "close_price"
+    t.float "cost_basis"
     t.integer "asset_type_id"
     t.integer "user_id"
     t.datetime "created_at", null: false
@@ -68,6 +69,8 @@ ActiveRecord::Schema.define(version: 2019_07_29_154011) do
   create_table "users", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
+    t.string "email"
+    t.string "telephone"
     t.string "username"
     t.integer "age"
     t.string "password_digest"

@@ -65,23 +65,16 @@ function inputAssets(){
     main.innerHTML = `<h1>Setup New Plan</h1> 
     <form id="asset-form">
         Ticker: 
-        <input type="text" step="0.001" name="ticker"/><br>
+        <input type="text" step="0.001" name="ticker_symbol"/><br>
+        Name: 
+        <input type="text" step="0.001" name="name"/><br>
         Shares: 
-        <input type="number" step="0.001" name="shares"/><br>
-        Price: 
-        <input type="number" step="0.001" name="price"/><br>
-        Purchase Date: 
-        <input type="datetime" step="0.001" name="purchase_date"/><br>
+        <input type="number" step="0.001" name="quantity"/><br>
+        Cost basis per share: 
+        <input type="number" step="0.001" name="cost_basis_per_share"/><br>
         Asset Type: 
         <select name="asset_type" >
-            <option value="cash">cash</option>
-            <option value="derivative">derivative</option>
             <option value="equity">equity</option>
-            <option value="etf">etf</option>
-            <option value="fixed_income">fixed_income</option>
-            <option value="loan">loan</option>
-            <option value="mutual_fund">mutual_fund</option>
-            <option value="other">other</option>
         </select><br>
         <input type="submit"/>
     </form>
@@ -91,6 +84,7 @@ function inputAssets(){
     <table id="assets-table">
     <tr>
     <th>Ticker symbol</th>
+    <th>Name</th>
     <th>Number of shares</th>
     <th>Purchase price per share</th>
     </tr>
@@ -103,10 +97,10 @@ function inputAssets(){
     // submits the financial plan form
     assetForm.addEventListener('submit', function(e){
         e.preventDefault()
-        const ticker = e.target[0].value
-        const shares = e.target[1].value
-        const price = e.target[2].value
-        const purchase_date  = e.target[3].value
+        const ticker_symbol = e.target[0].value
+        const name = e.target[1].value
+        const quantity = e.target[2].value
+        const cost_basis = e.target[3].value * quantity
         const asset_type = e.target[4].value
 
         fetch(`${BASE_URL}/assets`,{
@@ -116,10 +110,10 @@ function inputAssets(){
                 "Accept": 'application/json'
             },
             body: JSON.stringify({
-                "ticker": ticker,
-                "shares": shares,
-                "price": price,
-                "purchase_date": purchase_date,
+                "ticker_symbol": ticker_symbol,
+                "name": name,
+                "quantity": quantity,
+                "cost_basis": cost_basis,
                 "asset_type": asset_type,
                 "user_id": localStorage.user_id
             })
@@ -130,9 +124,10 @@ function inputAssets(){
                 // rewrite the DOM 'assets-table' to include the asset
                 assetsTable.innerHTML += `
                 <tr>
-                    <td>${asset.ticker}</td>
-                    <td>${asset.shares}</td>
-                    <td>${asset.price}</td>`
+                    <td>${asset.ticker_symbol}</td>
+                    <td>${asset.name}</td>
+                    <td>${asset.quantity}</td>
+                    <td>${asset.cost_basis/asset.quantity}</td>`
             })            
     })// ends the 'submit' eventListener on the asset form
 

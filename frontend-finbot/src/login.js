@@ -66,6 +66,10 @@ function showSignupPage() {
         <input type="text" name="last_name"/><br>
         Username: 
         <input type="text" name="username"/><br>
+        Email: 
+        <input type="text" name="email"/><br>
+        Phone number: 
+        <input type="text" name="telephone"/><br>
         Age: 
         <input type="number" name="age"/><br>
         Password: 
@@ -83,9 +87,11 @@ function showSignupPage() {
         const first_name = e.target[0].value
         const last_name = e.target[1].value
         const username = e.target[2].value
-        const age  = e.target[3].value
-        const password = e.target[4].value
-        const password_confirmation  = e.target[5].value
+        const email = e.target[3].value
+        const telephone = e.target[4].value
+        const age  = e.target[5].value
+        const password = e.target[6].value
+        const password_confirmation  = e.target[7].value
 
         fetch(`${BASE_URL}/users`, {
             method: 'POST',
@@ -96,6 +102,8 @@ function showSignupPage() {
                 "first_name": first_name,
                 "last_name": last_name,
                 "username": username,
+                "email": email,
+                "telephone": telephone,
                 "age": age,
                 "password": password,
                 "password_confirmation": password_confirmation
