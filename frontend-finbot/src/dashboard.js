@@ -1,34 +1,30 @@
-function createList(parent, arr){
-  arr.forEach(function (e){
-    var li = document.createElement('li'), ul;
+// function createList(parent, arr){
+//   arr.forEach(function (e){
+//     var li = document.createElement('li'), ul;
 
-    li.textContent = e.name;
-    if (e.nest){
-      ul = document.createElement('ul');
-      li.appendChild(ul);
-      createList(ul, e.nest);
-    }
-  })
-}
+//     li.textContent = e.name;
+//     if (e.nest){
+//       ul = document.createElement('ul');
+//       li.appendChild(ul);
+//       createList(ul, e.nest);
+//     }
+//   })
+// }
 
 
 function showDashboard() {
     main.innerHTML = 
     `<h2>User Dashboard</h2>
-    <canvas id="assets-chart" width="600 height="600></canvas>
     <div id=financial-plan> </div>
     <div id="actions">
 
     </div>
     <button id="edit-button">Edit Plan</button>
     <button id="asset-button">Edit Assets</button>
-<<<<<<< HEAD
+    <button id="link-button">Link Account</button>
     <button id="profile-button">View Profile</button>
     <button id="logout-button">Logout</button>
     `
-=======
-    <button id="link-button">Link Account</button>
-    <button id="profile-button">View Profile</button>`
 
     let plaidOpenHandler = (function($) {
       var handler = Plaid.create({
@@ -87,28 +83,7 @@ function showDashboard() {
     })(jQuery);
 
 
->>>>>>> 627709e90d81f49a7517b70a2cd54e58625aa8ce
 
-    // create the assets chart, showing past value and a projection for future value
-    const chartContainer = document.getElementById("assets-chart")
-
-    // create a fetch request to our API for the data on the user's assets
-    fetch(`${BASE_URL}/users/${localStorage.user_id}/getValue`)
-    .then(res => res.json())
-    .then(data => {
-      const assetsChart = new Chart(chartContainer, {
-        type: 'line',
-        data: data,
-        options: {
-          scales: {
-              yAxes: [{
-                  stacked: true
-              }]
-          }
-        }
-      })
-  
-    })
     
     //logout functionality
     const logoutButton = document.getElementById(`logout-button`)
@@ -149,12 +124,20 @@ function showDashboard() {
     actionDiv.innerHTML = ""
     fetch(`${BASE_URL}/users/${localStorage.user_id}`)
     .then(resp => resp.json())
-    .then(data=> {
+    .then(data => {
       console.log(data.assets[0])
       //calculate networth by asset and total
-      allohash = calType(data.assets)
-      totMon = calTotal(data.assets)
-      comparePlan(allohash,totMon, data.plan)
+      let allohash = calType(data.assets)
+      let totMon = calTotal(data.assets)
+
+      //calculate allocation percentage of current assets
+      calAllo(allohash, totMon)
+
+      let iplan = idealPlan(data.plan, totMon)
+
+      compare(iplan, data.plan)
+
+      comparePlan(allohash, totMon, data.plan)
 
       actionDiv.innerHTML += `<h4>Possible Actions:</h4>`
       //create list with id=actionList
