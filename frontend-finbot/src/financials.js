@@ -2,35 +2,35 @@
 function showFinancialPlan() {
     main.innerHTML = `<h1>Setup New Plan</h1>
     <form id="plan-form">
-        Small Cap Equities:
-        <input type="number" step="0.001" name="equity_smcap"/><br>
-        Middle Cap Equities:
-        <input type="number" step="0.001" name="equity_micap"/><br>
-        Large Cap Equities:
-        <input type="number" step="0.001" name="equity_lgcap"/><br>
-        High Yield Bonds:
-        <input type="number" step="0.001" name="bond_hy"/><br>
-        Low Yield Bonds:
-        <input type="number" step="0.001" name="bond_ly"/><br>
-        Municipal Bonds:
-        <input type="number" step="0.001" name="bond_muni"/><br>
-        Treasury Bonds:
-        <input type="number" step="0.001" name="bond_t"/><br>
         Cash:
         <input type="number" step="0.001" name="cash"/><br>
+        Derivatives:
+        <input type="number" step="0.001" name="derivative"/><br>
+        Equity:
+        <input type="number" step="0.001" name="equity"/><br>
+        ETF:
+        <input type="number" step="0.001" name="etf"/><br>
+        Fixed Income:
+        <input type="number" step="0.001" name="fixed_income"/><br>
+        Loans:
+        <input type="number" step="0.001" name="loan"/><br>
+        Mutual Funds:
+        <input type="number" step="0.001" name="mutual_fund"/><br>
+        Other:
+        <input type="number" step="0.001" name="other"/><br>
         <input type="submit"/>
     </form>`
     const planForm = document.getElementById('plan-form')
     planForm.addEventListener('submit', function(e){
         e.preventDefault()
-        const equity_smcap = e.target[0].value
-        const equity_micap = e.target[1].value
-        const equity_lgcap = e.target[2].value
-        const bond_hy  = e.target[3].value
-        const bond_ly = e.target[4].value
-        const bond_muni  = e.target[5].value
-        const bond_t = e.target[6].value
-        const cash  = e.target[7].value
+        const cash = e.target[0].value
+        const derivative = e.target[1].value
+        const equity = e.target[2].value
+        const etf  = e.target[3].value
+        const fixed_income = e.target[4].value
+        const loan  = e.target[5].value
+        const mutual_fund = e.target[6].value
+        const other  = e.target[7].value
     fetch(`${BASE_URL}/plans`,{
         method: "POST",
         headers: {
@@ -38,14 +38,14 @@ function showFinancialPlan() {
             "Accept": 'application/json'
         },
         body: JSON.stringify({
-            "equity_smcap": equity_smcap,
-            "equity_micap": equity_micap,
-            "equity_lgcap": equity_lgcap,
-            "bond_hy": bond_hy,
-            "bond_ly": bond_ly,
-            "bond_muni": bond_muni,
-            "bond_t": bond_t,
             "cash": cash,
+            "derivative": derivative,
+            "equity": equity,
+            "etf": etf,
+            "fixed_income": fixed_income,
+            "loan": loan,
+            "mutual_fund": mutual_fund,
+            "other": other,
             "user_id": localStorage.user_id
         })
         })
@@ -65,23 +65,16 @@ function inputAssets(){
     main.innerHTML = `<h1>Setup New Plan</h1> 
     <form id="asset-form">
         Ticker: 
-        <input type="text" step="0.001" name="ticker"/><br>
+        <input type="text" step="0.001" name="ticker_symbol"/><br>
+        Name: 
+        <input type="text" step="0.001" name="name"/><br>
         Shares: 
-        <input type="number" step="0.001" name="shares"/><br>
-        Price: 
-        <input type="number" step="0.001" name="price"/><br>
-        Purchase Date: 
-        <input type="datetime" step="0.001" name="purchase_date"/><br>
+        <input type="number" step="0.001" name="quantity"/><br>
+        Cost basis per share: 
+        <input type="number" step="0.001" name="cost_basis_per_share"/><br>
         Asset Type: 
         <select name="asset_type" >
-            <option value="equity_smcap">equity_smcap</option>
-            <option value="equity_micap">equity_micap</option>
-            <option value="equity_lgcap">equity_lgcap</option>
-            <option value="bond_hy">bond_hy</option>
-            <option value="bond_ly">bond_ly</option>
-            <option value="bond_muni">bond_muni</option>
-            <option value="bond_t">bond_t</option>
-            <option value="cash">ca\sh</option>
+            <option value="equity">equity</option>
         </select><br>
         <input type="submit"/>
     </form>
@@ -91,6 +84,7 @@ function inputAssets(){
     <table id="assets-table">
     <tr>
     <th>Ticker symbol</th>
+    <th>Name</th>
     <th>Number of shares</th>
     <th>Purchase price per share</th>
     </tr>
@@ -103,10 +97,10 @@ function inputAssets(){
     // submits the financial plan form
     assetForm.addEventListener('submit', function(e){
         e.preventDefault()
-        const ticker = e.target[0].value
-        const shares = e.target[1].value
-        const price = e.target[2].value
-        const purchase_date  = e.target[3].value
+        const ticker_symbol = e.target[0].value
+        const name = e.target[1].value
+        const quantity = e.target[2].value
+        const cost_basis = e.target[3].value * quantity
         const asset_type = e.target[4].value
 
         fetch(`${BASE_URL}/assets`,{
@@ -116,10 +110,10 @@ function inputAssets(){
                 "Accept": 'application/json'
             },
             body: JSON.stringify({
-                "ticker": ticker,
-                "shares": shares,
-                "price": price,
-                "purchase_date": purchase_date,
+                "ticker_symbol": ticker_symbol,
+                "name": name,
+                "quantity": quantity,
+                "cost_basis": cost_basis,
                 "asset_type": asset_type,
                 "user_id": localStorage.user_id
             })
@@ -130,9 +124,10 @@ function inputAssets(){
                 // rewrite the DOM 'assets-table' to include the asset
                 assetsTable.innerHTML += `
                 <tr>
-                    <td>${asset.ticker}</td>
-                    <td>${asset.shares}</td>
-                    <td>${asset.price}</td>`
+                    <td>${asset.ticker_symbol}</td>
+                    <td>${asset.name}</td>
+                    <td>${asset.quantity}</td>
+                    <td>${asset.cost_basis/asset.quantity}</td>`
             })            
     })// ends the 'submit' eventListener on the asset form
 
