@@ -1,12 +1,30 @@
+// function createList(parent, arr){
+//   arr.forEach(function (e){
+//     var li = document.createElement('li'), ul;
+
+//     li.textContent = e.name;
+//     if (e.nest){
+//       ul = document.createElement('ul');
+//       li.appendChild(ul);
+//       createList(ul, e.nest);
+//     }
+//   })
+// }
+
+
 function showDashboard() {
-    main.innerHTML = `<h2>User Dashboard</h2>
-    <canvas id="assets-chart" width="600 height="600></canvas>
-    <button id="logout-button">Logout</button>
+    main.innerHTML = 
+    `<h2>User Dashboard</h2>
     <div id=financial-plan> </div>
+    <div id="actions">
+
+    </div>
     <button id="edit-button">Edit Plan</button>
     <button id="asset-button">Edit Assets</button>
     <button id="link-button">Link Account</button>
-    <button id="profile-button">View Profile</button>`
+    <button id="profile-button">View Profile</button>
+    <button id="logout-button">Logout</button>
+    `
 
     let plaidOpenHandler = (function($) {
       var handler = Plaid.create({
@@ -18,15 +36,11 @@ function showDashboard() {
         env: 'sandbox',
         // Replace with your public_key from the Dashboard
         key: '7741da348ca62c9f4d4ff17664985d',
-        product: ['transactions'],
+        product: ['investments'],
         // Optional, use webhooks to get transaction and error updates
         webhook: 'https://requestb.in',
         // Optional, specify a language to localize Link
         language: 'en',
-        // Optional, specify userLegalName and userEmailAddress to
-        // enable all Auth features
-        userLegalName: 'John Appleseed',
-        userEmailAddress: 'jappleseed@yourapp.com',
         onLoad: function() {
           // Optional, called when Link loads
         },
@@ -37,6 +51,7 @@ function showDashboard() {
           // Select Account view is enabled.
           $.post('http://localhost:3000/get_access_token', {
             public_token: public_token,
+            user_id: localStorage.user_id
           });
         },
         onExit: function(err, metadata) {
@@ -77,17 +92,9 @@ function showDashboard() {
     .then(res => res.json())
     .then(data => {
       const assetsChart = new Chart(chartContainer, {
-        type: 'line',
-        data: data,
-        options: {
-          scales: {
-              yAxes: [{
-                  stacked: true
-              }]
-          }
-        }
+        type: 'pie',
+        data: data
       })
-  
     })
     
     //logout functionality
@@ -116,14 +123,69 @@ function showDashboard() {
     const linkButton = document.getElementById('link-button')
     linkButton.addEventListener('click', plaidOpenHandler)
 
-
     //view user data
     const viewButton = document.getElementById('profile-button')
     viewButton.addEventListener('click', function(e){
       viewProfile()
 
     })
-        
-
     
+    //locate actions div
+    const actionDiv = document.getElementById('actions')
+    actionDiv.innerHTML = ""
+    fetch(`${BASE_URL}/users/${localStorage.user_id}`)
+    .then(resp => resp.json())
+    .then(data => {
+      console.log(data)
+      //calculate networth by asset and total
+      let allohash = calType(data.assets)
+      let totMon = calTotal(data.assets)
+
+      //calculate allocation percentage of current assets
+      calAllo(allohash, totMon)
+
+      let iplan = idealPlan(data.plan, totMon)
+
+      let comResult = compare(allohash, data.plan)
+      // console.log(comResult)
+      let result = solution(comResult)
+      // console.log(result)
+
+      actionDiv.innerHTML += `<h4>Possible Actions:</h4>`
+      //create list with id=actionList
+      ul = document.createElement('ul')
+      ul.setAttribute("id", "actionList")
+      actionDiv.appendChild(ul)
+      // console.log(actionDiv)
+
+      //add individual elements for ul
+      // let li = document.createElement('li')
+      // li.appendChild(document.createTextNode("Action 1"))
+      // li.setAttribute("id", "placeholder for action id")
+      // ul.appendChild(li);
+      Object.keys(comResult).forEach(function(key) {
+        console.log(key, comResult[key])
+        let li = document.createElement('li')
+        if (comResult[key] > 0){
+          li.appendChild(document.createTextNode(`${key}: buy $${comResult[key]} more`))
+          ul.appendChild(li);
+        } else if(comResult[key] < 0 ){
+          comResult[key] = Math.abs(comResult[key])
+          li.appendChild(document.createTextNode(`${key}: sell $${comResult[key]} more`))
+          ul.appendChild(li);
+        } else {
+          li.appendChild(document.createTextNode(`${key}: do nothing`))
+          ul.appendChild(li);
+        }
+      })
+      // for( var key in comResult){
+      // }
+      // comResult.forEach(function(e) {
+      //   console.log(e)
+      //   let li = document.createElement('li')
+      // });
+
+
+
+    })
 }
