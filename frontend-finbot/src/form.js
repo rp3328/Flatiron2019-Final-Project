@@ -28,22 +28,22 @@ function viewProfile(){
 function editPlan(){
     main.innerHTML = `<h1>Edit Your Plan</h1>
     <form id="edit-plan-form">
-        Small Cap Equities:
-        <input type="number" step="0.001" name="equity_smcap"/><br>
-        Middle Cap Equities:
-        <input type="number" step="0.001" name="equity_micap"/><br>
-        Large Cap Equities:
-        <input type="number" step="0.001" name="equity_lgcap"/><br>
-        High Yield Bonds:
-        <input type="number" step="0.001" name="bond_hy"/><br>
-        Low Yield Bonds:
-        <input type="number" step="0.001" name="bond_ly"/><br>
-        Municipal Bonds:
-        <input type="number" step="0.001" name="bond_muni"/><br>
-        Treasury Bonds:
-        <input type="number" step="0.001" name="bond_t"/><br>
         Cash:
         <input type="number" step="0.001" name="cash"/><br>
+        Derivatives:
+        <input type="number" step="0.001" name="derivative"/><br>
+        Equity:
+        <input type="number" step="0.001" name="equity"/><br>
+        Exchange Traded Funds:
+        <input type="number" step="0.001" name="etf"/><br>
+        Fixed Income Securities:
+        <input type="number" step="0.001" name="fixed_income"/><br>
+        Loans:
+        <input type="number" step="0.001" name="loan"/><br>
+        Mutual Funds:
+        <input type="number" step="0.001" name="mutual_fund"/><br>
+        Other assets:
+        <input type="number" step="0.001" name="other"/><br>
         <input type="submit"/>
     </form>`
     
@@ -53,14 +53,14 @@ function editPlan(){
     const planForm = document.getElementById('edit-plan-form')
     planForm.addEventListener('submit', function(e){
         e.preventDefault()
-        const equity_smcap = e.target[0].value
-        const equity_micap = e.target[1].value
-        const equity_lgcap = e.target[2].value
-        const bond_hy  = e.target[3].value
-        const bond_ly = e.target[4].value
-        const bond_muni  = e.target[5].value
-        const bond_t = e.target[6].value
-        const cash  = e.target[7].value
+        const cash = e.target[0].value
+        const derivative = e.target[1].value
+        const equity = e.target[2].value
+        const etf  = e.target[3].value
+        const fixed_income = e.target[4].value
+        const loan  = e.target[5].value
+        const mutual_fund = e.target[6].value
+        const other  = e.target[7].value
     fetch(`${BASE_URL}/plans/${plan_id}`,{
         method: "PATCH",
         headers: {
@@ -68,14 +68,14 @@ function editPlan(){
             "Accept": 'application/json'
         },
         body: JSON.stringify({
-            "equity_smcap": equity_smcap,
-            "equity_micap": equity_micap,
-            "equity_lgcap": equity_lgcap,
-            "bond_hy": bond_hy,
-            "bond_ly": bond_ly,
-            "bond_muni": bond_muni,
-            "bond_t": bond_t,
             "cash": cash,
+            "derivative": derivative,
+            "equity": equity,
+            "etf": etf,
+            "fixed_income": fixed_income,
+            "loan": loan,
+            "mutual_fund": mutual_fund,
+            "other": other,
             "user_id": localStorage.user_id
         })
         })
@@ -166,14 +166,14 @@ function editAssets(){
         <input type="datetime" step="0.001" name="purchase_date"/><br>
         Asset Type: 
         <select name="asset_type" >
-            <option value="equity_smcap">equity_smcap</option>
-            <option value="equity_micap">equity_micap</option>
-            <option value="equity_lgcap">equity_lgcap</option>
-            <option value="bond_hy">bond_hy</option>
-            <option value="bond_ly">bond_ly</option>
-            <option value="bond_muni">bond_muni</option>
-            <option value="bond_t">bond_t</option>
             <option value="cash">cash</option>
+            <option value="derivative">derivative</option>
+            <option value="equity">equity</option>
+            <option value="etf">ETF</option>
+            <option value="fixed_income">fixed_income</option>
+            <option value="loan">loan</option>
+            <option value="mutual_fund">mutual_fund</option>
+            <option value="other">other</option>
         </select><br>
         <input type="submit"/>
     </form>

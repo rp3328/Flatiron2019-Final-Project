@@ -3,6 +3,7 @@ class UsersController < ApplicationController
     require 'net/http'
     require 'open-uri'
     require 'json'
+    require 'httparty'
 
     def login
         user = User.find_by(username: params[:username])
@@ -18,7 +19,6 @@ class UsersController < ApplicationController
         user = User.create(user_params)
         
         if user.valid?
-            # plan = Plan.create(user: user)
             render json: user
         else
             flash[:error] = user.errors.full_messages
@@ -82,16 +82,39 @@ class UsersController < ApplicationController
 
     def get_token
         client = Plaid::Client.new(env: :sandbox,
-                client_id: '5d39e80609ec7100123076a3',
-                secret: '5d80813b955fe03e7347c7dc4242e4',
-                public_key: '7741da348ca62c9f4d4ff17664985d')
+                client_id: Figaro.env.plaid_client_id,
+                secret: Figaro.env.plaid_secret,
+                public_key: Figaro.env.plaid_public_key)
 
         exchange_token_response = client.item.public_token.exchange(params['public_token'])
         access_token = exchange_token_response['access_token']
         item_id = exchange_token_response['item_id']
-        puts "access token: #{access_token}"
-        puts "item ID: #{item_id}"
-        render json: {access_token: access_token, item_id: item_id}
+
+        # create a Credential object to store the user's login credentials
+        credential = Credential.create(access_token: access_token, item_id: item_id, user: User.find(params['user_id']))
+
+        # add each of the user's holdings as Asset objects
+        investments = client.investments.holdings.get(access_token)
+        securities = investments['securities']
+        holdings = investments['holdings']
+        byebug
+        
+        # holdings.each do |holding|
+        #     security = securities.find do |sec|
+        #         sec.security_id == holding.security_id
+        #     end
+        #     Asset.create(
+        #         ticker: security.ticker_symbol,
+        #         shares: holding.quantity,
+        #         price: holding.institution_price,
+        #         purchase_date: ,
+        #         asset_type_id: ,
+        #         user_id: 
+        #     )
+
+
+
+        # render json: {}
     end
 
     private 

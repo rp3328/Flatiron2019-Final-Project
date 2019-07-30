@@ -18,15 +18,11 @@ function showDashboard() {
         env: 'sandbox',
         // Replace with your public_key from the Dashboard
         key: '7741da348ca62c9f4d4ff17664985d',
-        product: ['transactions'],
+        product: ['investments'],
         // Optional, use webhooks to get transaction and error updates
         webhook: 'https://requestb.in',
         // Optional, specify a language to localize Link
         language: 'en',
-        // Optional, specify userLegalName and userEmailAddress to
-        // enable all Auth features
-        userLegalName: 'John Appleseed',
-        userEmailAddress: 'jappleseed@yourapp.com',
         onLoad: function() {
           // Optional, called when Link loads
         },
@@ -37,6 +33,7 @@ function showDashboard() {
           // Select Account view is enabled.
           $.post('http://localhost:3000/get_access_token', {
             public_token: public_token,
+            user_id: localStorage.user_id
           });
         },
         onExit: function(err, metadata) {

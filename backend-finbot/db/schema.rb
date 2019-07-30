@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_25_182219) do
+ActiveRecord::Schema.define(version: 2019_07_29_154011) do
 
   create_table "actions", force: :cascade do |t|
     t.string "name"
@@ -41,15 +41,24 @@ ActiveRecord::Schema.define(version: 2019_07_25_182219) do
     t.index ["user_id"], name: "index_assets_on_user_id"
   end
 
+  create_table "credentials", force: :cascade do |t|
+    t.string "access_token"
+    t.string "item_id"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_credentials_on_user_id"
+  end
+
   create_table "plans", force: :cascade do |t|
-    t.float "equity_smcap"
-    t.float "equity_micap"
-    t.float "equity_lgcap"
-    t.float "bond_hy"
-    t.float "bond_ly"
-    t.float "bond_muni"
-    t.float "bond_t"
     t.float "cash"
+    t.float "derivative"
+    t.float "equity"
+    t.float "etf"
+    t.float "fixed_income"
+    t.float "loan"
+    t.float "mutual_fund"
+    t.float "other"
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
