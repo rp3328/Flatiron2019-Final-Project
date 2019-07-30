@@ -1,12 +1,30 @@
+// function createList(parent, arr){
+//   arr.forEach(function (e){
+//     var li = document.createElement('li'), ul;
+
+//     li.textContent = e.name;
+//     if (e.nest){
+//       ul = document.createElement('ul');
+//       li.appendChild(ul);
+//       createList(ul, e.nest);
+//     }
+//   })
+// }
+
+
 function showDashboard() {
-    main.innerHTML = `<h2>User Dashboard</h2>
-    <canvas id="assets-chart" width="600 height="600></canvas>
-    <button id="logout-button">Logout</button>
+    main.innerHTML = 
+    `<h2>User Dashboard</h2>
     <div id=financial-plan> </div>
+    <div id="actions">
+
+    </div>
     <button id="edit-button">Edit Plan</button>
     <button id="asset-button">Edit Assets</button>
     <button id="link-button">Link Account</button>
-    <button id="profile-button">View Profile</button>`
+    <button id="profile-button">View Profile</button>
+    <button id="logout-button">Logout</button>
+    `
 
     let plaidOpenHandler = (function($) {
       var handler = Plaid.create({
@@ -66,6 +84,7 @@ function showDashboard() {
 
 
 
+<<<<<<< HEAD
     // create the assets chart, showing past value and a projection for future value
     const chartContainer = document.getElementById("assets-chart")
 
@@ -78,6 +97,8 @@ function showDashboard() {
         data: data
       })
     })
+=======
+>>>>>>> 2ea65bd680e5624fefcfdd10c5d248b4638f2588
     
     //logout functionality
     const logoutButton = document.getElementById(`logout-button`)
@@ -111,7 +132,63 @@ function showDashboard() {
       viewProfile()
 
     })
-        
-
     
+    //locate actions div
+    const actionDiv = document.getElementById('actions')
+    actionDiv.innerHTML = ""
+    fetch(`${BASE_URL}/users/${localStorage.user_id}`)
+    .then(resp => resp.json())
+    .then(data => {
+      console.log(data)
+      //calculate networth by asset and total
+      let allohash = calType(data.assets)
+      let totMon = calTotal(data.assets)
+
+      //calculate allocation percentage of current assets
+      calAllo(allohash, totMon)
+
+      let iplan = idealPlan(data.plan, totMon)
+
+      let comResult = compare(allohash, data.plan)
+      // console.log(comResult)
+      let result = solution(comResult)
+      // console.log(result)
+
+      actionDiv.innerHTML += `<h4>Possible Actions:</h4>`
+      //create list with id=actionList
+      ul = document.createElement('ul')
+      ul.setAttribute("id", "actionList")
+      actionDiv.appendChild(ul)
+      // console.log(actionDiv)
+
+      //add individual elements for ul
+      // let li = document.createElement('li')
+      // li.appendChild(document.createTextNode("Action 1"))
+      // li.setAttribute("id", "placeholder for action id")
+      // ul.appendChild(li);
+      Object.keys(comResult).forEach(function(key) {
+        console.log(key, comResult[key])
+        let li = document.createElement('li')
+        if (comResult[key] > 0){
+          li.appendChild(document.createTextNode(`${key}: buy $${comResult[key]} more`))
+          ul.appendChild(li);
+        } else if(comResult[key] < 0 ){
+          comResult[key] = Math.abs(comResult[key])
+          li.appendChild(document.createTextNode(`${key}: sell $${comResult[key]} more`))
+          ul.appendChild(li);
+        } else {
+          li.appendChild(document.createTextNode(`${key}: do nothing`))
+          ul.appendChild(li);
+        }
+      })
+      // for( var key in comResult){
+      // }
+      // comResult.forEach(function(e) {
+      //   console.log(e)
+      //   let li = document.createElement('li')
+      // });
+
+
+
+    })
 }

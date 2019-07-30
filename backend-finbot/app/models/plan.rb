@@ -1,7 +1,7 @@
 class Plan < ApplicationRecord
     belongs_to :user
 
-    validate :limit_value
+    # validate :limit_value
 
 
     def limit_value
