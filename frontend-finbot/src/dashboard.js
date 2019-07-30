@@ -125,7 +125,7 @@ function showDashboard() {
     fetch(`${BASE_URL}/users/${localStorage.user_id}`)
     .then(resp => resp.json())
     .then(data => {
-      console.log(data.assets[0])
+      console.log(data)
       //calculate networth by asset and total
       let allohash = calType(data.assets)
       let totMon = calTotal(data.assets)
@@ -135,9 +135,9 @@ function showDashboard() {
 
       let iplan = idealPlan(data.plan, totMon)
 
-      compare(iplan, data.plan)
-
-      comparePlan(allohash, totMon, data.plan)
+      let comResult = compare(allohash, data.plan)
+      console.log(comResult)
+      solution(comResult)
 
       actionDiv.innerHTML += `<h4>Possible Actions:</h4>`
       //create list with id=actionList
@@ -147,10 +147,32 @@ function showDashboard() {
       console.log(actionDiv)
 
       //add individual elements for ul
+      // let li = document.createElement('li')
+      // li.appendChild(document.createTextNode("Action 1"))
+      // li.setAttribute("id", "placeholder for action id")
+      // ul.appendChild(li);
+      Object.keys(comResult).forEach(function(key) {
+        console.log(key, comResult[key])
         let li = document.createElement('li')
-        li.appendChild(document.createTextNode("Action 1"))
-        li.setAttribute("id", "placeholder for action id")
-        ul.appendChild(li);
+        if (comResult[key] > 0){
+          li.appendChild(document.createTextNode(`${key}: buy ${comResult[key]} more`))
+          ul.appendChild(li);
+        } else if(comResult[key] < 0 ){
+          li.appendChild(document.createTextNode(`${key}: sell ${comResult[key]} more`))
+          ul.appendChild(li);
+        } else {
+          li.appendChild(document.createTextNode(`${key}: do nothing`))
+          ul.appendChild(li);
+        }
+      })
+      // for( var key in comResult){
+      // }
+      // comResult.forEach(function(e) {
+      //   console.log(e)
+      //   let li = document.createElement('li')
+      // });
+
+
 
     })
 }

@@ -28,7 +28,7 @@ class UsersController < ApplicationController
 
     def show
         user = User.find(params[:id])
-        render json: user, include: [:assets, :plan, :actions]
+        render json: user, include: [:assets, :plan, :actions, :asset_types]
     end
 
     #gets a hash of prices for the user's assets at points in the past
