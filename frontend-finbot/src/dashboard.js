@@ -84,6 +84,7 @@ function showDashboard() {
 
 
 
+<<<<<<< HEAD
     // create the assets chart, showing past value and a projection for future value
     const chartContainer = document.getElementById("assets-chart")
 
@@ -96,6 +97,8 @@ function showDashboard() {
         data: data
       })
     })
+=======
+>>>>>>> 2ea65bd680e5624fefcfdd10c5d248b4638f2588
     
     //logout functionality
     const logoutButton = document.getElementById(`logout-button`)

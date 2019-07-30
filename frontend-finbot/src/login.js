@@ -17,7 +17,9 @@ function showLoginScreen() {
     <button id="signup-button">Sign Up</button>
     `
 
-    localStorage.clear()
+    //debugging Ganeh's stuff;
+    // localStorage.clear()
+
     // submits username and password for logging in through a POST request to /users
     const loginForm = document.getElementById('login-form')
     const signupButton = document.getElementById('signup-button')
@@ -40,11 +42,13 @@ function showLoginScreen() {
         .then(res => res.json())
         .then(data => {
             // if the login request is successful
-               
+            
             if(!(data.error == null)){
                 showLoginScreen()
             }else{
+                console.log(data)
                 localStorage.setItem("user_id", data.id)
+                localStorage.setItem("plan_id", data.plan.id)
                 showDashboard()
             }
         })
@@ -66,6 +70,10 @@ function showSignupPage() {
         <input type="text" name="last_name"/><br>
         Username: 
         <input type="text" name="username"/><br>
+        Email: 
+        <input type="text" name="email"/><br>
+        Phone number: 
+        <input type="text" name="telephone"/><br>
         Age: 
         <input type="number" name="age"/><br>
         Password: 
@@ -83,9 +91,11 @@ function showSignupPage() {
         const first_name = e.target[0].value
         const last_name = e.target[1].value
         const username = e.target[2].value
-        const age  = e.target[3].value
-        const password = e.target[4].value
-        const password_confirmation  = e.target[5].value
+        const email = e.target[3].value
+        const telephone = e.target[4].value
+        const age  = e.target[5].value
+        const password = e.target[6].value
+        const password_confirmation  = e.target[7].value
 
         fetch(`${BASE_URL}/users`, {
             method: 'POST',
@@ -96,6 +106,8 @@ function showSignupPage() {
                 "first_name": first_name,
                 "last_name": last_name,
                 "username": username,
+                "email": email,
+                "telephone": telephone,
                 "age": age,
                 "password": password,
                 "password_confirmation": password_confirmation

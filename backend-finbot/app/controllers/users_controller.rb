@@ -3,12 +3,13 @@ class UsersController < ApplicationController
     require 'net/http'
     require 'open-uri'
     require 'json'
+    require 'httparty'
 
     def login
         user = User.find_by(username: params[:username])
 
         if user && user.authenticate(params[:password])
-            render json: user
+            render json: user, include: [:plan, :actions]
         else
             render json: { error: "We cannot recognize this username/password combination" }, status: 401
         end
@@ -18,7 +19,6 @@ class UsersController < ApplicationController
         user = User.create(user_params)
         
         if user.valid?
-            # plan = Plan.create(user: user)
             render json: user
         else
             flash[:error] = user.errors.full_messages
@@ -28,49 +28,51 @@ class UsersController < ApplicationController
 
     def show
         user = User.find(params[:id])
-        render json: user, include: [:assets]
+        render json: user, include: [:assets, :plan, :actions, :asset_types]
     end
 
-    #gets a hash of prices for the user's assets at points in the past
     def get_value
         user_id = params[:id].to_i
-        iex_api_key = Figaro.env.iex_api_key
-        iex_url = 'https://cloud.iexapis.com/stable/stock'
-        asset_value_hash = Hash.new
-        asset_value_hash[:datasets] = []
+        return_hash = Hash.new
+        return_hash[:labels] = []
+        return_hash[:datasets] = [{}]
+        return_hash[:datasets][0][:label] = "Asset Allocation ($)"
+        return_hash[:datasets][0][:backgroundColor] = []
+        return_hash[:datasets][0][:data] = []
+        
         
         # get all the user's assets
         user_assets = Asset.all.select do |asset|
             asset.user_id == user_id
         end
-        
+
+        # update every asset's closing price
         user_assets.each do |asset|
-            active_asset_index = asset_value_hash[:datasets].length
-            uri = URI.parse(iex_url.dup.concat("/#{asset.ticker}/chart/5y?chartCloseOnly=true&chartInterval=60&token=#{iex_api_key}"))
-            response = Net::HTTP.get_response(uri)
-            if response.header.kind_of?(Net::HTTPOK) && JSON.parse(response.body).length != 0
-                data = JSON.parse(response.body)    
-                asset_value_hash[:datasets].push(Hash.new)
-                asset_value_hash[:datasets][active_asset_index][:label] = asset.ticker
-                asset_value_hash[:datasets][active_asset_index][:data] = data.map do |day| 
-                    if day["date"].to_datetime > asset.purchase_date
-                        day["close"] * asset.shares
-                    else
-                        0
-                    end
-                end
-                asset_value_hash[:labels] = data.map {|day| day["date"].gsub('-','')}
-            end
+            asset.update_close_price
         end
-            render json: asset_value_hash
+
+        # total all the positions by Asset Type
+        grouping = user_assets.group_by do |asset|
+            asset.asset_type
+        end
+        
+        grouping.each do |asset_type, user_assets_array|
+            asset_type_total = user_assets_array.reduce(0) do |sum, asset|
+                sum + (asset.quantity * asset.close_price)
+            end
+            return_hash[:labels].push(asset_type.name)
+            return_hash[:datasets][0][:data].push(asset_type_total)
+            return_hash[:datasets][0][:backgroundColor].push("#".concat(SecureRandom.hex(3)))
+            end            
+        render json: return_hash
     end
 
     def update
         user = User.find(params[:id])
         if user.update(user_params)
-            render json: user, include: [:assets]
+            render json: user, include: [:assets, :plan, :actions]
         else
-            render json: user, include: [:assets]
+            render json: user, include: [:assets, :plan, :actions]
         end
     end
 
@@ -82,21 +84,42 @@ class UsersController < ApplicationController
 
     def get_token
         client = Plaid::Client.new(env: :sandbox,
-                client_id: '5d39e80609ec7100123076a3',
-                secret: '5d80813b955fe03e7347c7dc4242e4',
-                public_key: '7741da348ca62c9f4d4ff17664985d')
+                client_id: Figaro.env.plaid_client_id,
+                secret: Figaro.env.plaid_secret,
+                public_key: Figaro.env.plaid_public_key)
 
         exchange_token_response = client.item.public_token.exchange(params['public_token'])
         access_token = exchange_token_response['access_token']
         item_id = exchange_token_response['item_id']
-        puts "access token: #{access_token}"
-        puts "item ID: #{item_id}"
-        render json: {access_token: access_token, item_id: item_id}
+
+        # create a Credential object to store the user's login credentials
+        credential = Credential.create(access_token: access_token, item_id: item_id, user: User.find(params['user_id']))
+
+        # add each of the user's holdings as Asset objects
+        investments = client.investments.holdings.get(access_token)
+        securities = investments['securities']
+        holdings = investments['holdings']
+        
+        holdings.each do |holding|
+            security = securities.find do |sec|
+                sec.security_id == holding.security_id
+            end
+            Asset.create(
+                ticker_symbol: security["ticker_symbol"],
+                name: security["name"],
+                quantity: holding["quantity"],
+                close_price: security["close_price"],
+                cost_basis: holding["cost_basis"],
+                asset_type_id: AssetType.find_by(name: security["type"]).id,
+                user_id: params["user_id"]
+            )
+        end
+        render json: {}
     end
 
     private 
     def user_params
-        params.permit(:first_name, :last_name, :username, :age, :password, :password_confirmation)
+        params.permit(:first_name, :last_name, :username, :email, :telephone, :age, :password, :password_confirmation)
     end
 
 end

@@ -8,7 +8,6 @@ class PlansController < ApplicationController
     def create
         plan = Plan.create(plan_params)
         render json: plan
-
     end
 
     def show
@@ -28,7 +27,7 @@ class PlansController < ApplicationController
 
     private 
     def plan_params
-        params.require(:plan).permit(:equity_smcap, :equity_micap, :equity_lgcap, :bond_hy, :bond_ly, :bond_muni, :bond_t, :cash, :user_id)
+        params.require(:plan).permit(:cash, :derivative, :equity, :etf, :fixed_income, :loan, :mutual_fund, :other, :user_id)
     end
 
 
