@@ -60,8 +60,6 @@ function showFinancialPlan() {
     
 
 function inputAssets(){
-
-    
     main.innerHTML = `<h1>Setup New Plan</h1> 
     <form id="asset-form">
         Ticker: 

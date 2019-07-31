@@ -1,20 +1,7 @@
-// function createList(parent, arr){
-//   arr.forEach(function (e){
-//     var li = document.createElement('li'), ul;
-
-//     li.textContent = e.name;
-//     if (e.nest){
-//       ul = document.createElement('ul');
-//       li.appendChild(ul);
-//       createList(ul, e.nest);
-//     }
-//   })
-// }
-
-
 function showDashboard() {
     main.innerHTML = 
-    `<h2>User Dashboard</h2>
+    `
+    <h2>User Dashboard</h2>
     <div id=financial-plan> </div>
     <div id="actions">
 
@@ -136,33 +123,21 @@ function showDashboard() {
     fetch(`${BASE_URL}/users/${localStorage.user_id}`)
     .then(resp => resp.json())
     .then(data => {
-      console.log(data)
       //calculate networth by asset and total
       let allohash = calType(data.assets)
       let totMon = calTotal(data.assets)
-
-      //calculate allocation percentage of current assets
-      calAllo(allohash, totMon)
-
+      //calculate wanted networth by asset
       let iplan = idealPlan(data.plan, totMon)
+      //compare two value allocation
+      let comResult = compare(allohash, iplan)
 
-      let comResult = compare(allohash, data.plan)
-      // console.log(comResult)
-      let result = solution(comResult)
-      // console.log(result)
-
+      //div for Actions
       actionDiv.innerHTML += `<h4>Possible Actions:</h4>`
       //create list with id=actionList
       ul = document.createElement('ul')
       ul.setAttribute("id", "actionList")
       actionDiv.appendChild(ul)
-      // console.log(actionDiv)
 
-      //add individual elements for ul
-      // let li = document.createElement('li')
-      // li.appendChild(document.createTextNode("Action 1"))
-      // li.setAttribute("id", "placeholder for action id")
-      // ul.appendChild(li);
       Object.keys(comResult).forEach(function(key) {
         console.log(key, comResult[key])
         let li = document.createElement('li')
@@ -178,14 +153,5 @@ function showDashboard() {
           ul.appendChild(li);
         }
       })
-      // for( var key in comResult){
-      // }
-      // comResult.forEach(function(e) {
-      //   console.log(e)
-      //   let li = document.createElement('li')
-      // });
-
-
-
     })
 }
