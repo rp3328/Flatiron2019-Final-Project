@@ -1,9 +1,9 @@
 function showDashboard() {
     main.innerHTML = 
     `
-    <h2>User Dashboard</h2>
+    <h2 class ="white">User Dashboard</h2>
     <div id=financial-plan> </div>
-    <div id="actions">
+    <div id="actions" class="test">
 
     </div>
     <button id="edit-button">Edit Plan</button>
@@ -132,7 +132,7 @@ function showDashboard() {
       let comResult = compare(allohash, iplan)
 
       //div for Actions
-      actionDiv.innerHTML += `<h4>Possible Actions:</h4>`
+      actionDiv.innerHTML += `<h4 class="white">Possible Actions:</h4>`
       //create list with id=actionList
       ul = document.createElement('ul')
       ul.setAttribute("id", "actionList")
