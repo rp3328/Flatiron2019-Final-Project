@@ -3,10 +3,12 @@ function showDashboard() {
     `
     <h2 class ="white">User Dashboard</h2>
     <div id=financial-plan> </div>
-    
-    <canvas id="assets-chart" width="400" height="400"></canvas>
-    <canvas id="plan-chart" width="400" height="400"></canvas>
-
+    <div class="container">
+        <canvas id="assets-chart" width="400" height="400"></canvas>
+    </div>
+    <div class="container">
+        <canvas id="plan-chart" width="400" height="400"></canvas>
+    </div>
     <div id="actions" class="test">
 
     </div>
@@ -167,7 +169,7 @@ function showDashboard() {
       actionDiv.appendChild(ul)
 
       Object.keys(comResult).forEach(function(key) {
-        console.log(key, comResult[key])
+        // console.log(key, comResult[key])
         let li = document.createElement('li')
         if (comResult[key] > 0){
           li.appendChild(document.createTextNode(`${key}: buy $${comResult[key]} more`))
