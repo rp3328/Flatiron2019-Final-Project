@@ -32,18 +32,18 @@ class UsersController < ApplicationController
     end
 
     def get_value
-        user_id = params[:id].to_i
-        return_hash = Hash.new
-        return_hash[:labels] = []
-        return_hash[:datasets] = [{}]
-        return_hash[:datasets][0][:label] = "Asset Allocation ($)"
-        return_hash[:datasets][0][:backgroundColor] = []
-        return_hash[:datasets][0][:data] = []
-        
+        user = User.find(params[:id].to_i)
+        data_hash = Hash.new
+        options_hash = Hash.new
+        data_hash[:labels] = []
+        data_hash[:datasets] = [{}]
+        data_hash[:datasets][0][:label] = "Asset Allocation ($)"
+        data_hash[:datasets][0][:backgroundColor] = []
+        data_hash[:datasets][0][:data] = []        
         
         # get all the user's assets
         user_assets = Asset.all.select do |asset|
-            asset.user_id == user_id
+            asset.user_id == user.id
         end
 
         # update every asset's closing price
@@ -51,7 +51,7 @@ class UsersController < ApplicationController
             asset.update_close_price
         end
 
-        # total all the positions by Asset Type
+        # total all the positions by Asset Type to form the data hash
         grouping = user_assets.group_by do |asset|
             asset.asset_type
         end
@@ -60,11 +60,18 @@ class UsersController < ApplicationController
             asset_type_total = user_assets_array.reduce(0) do |sum, asset|
                 sum + (asset.quantity * asset.close_price)
             end
-            return_hash[:labels].push(asset_type.name)
-            return_hash[:datasets][0][:data].push(asset_type_total)
-            return_hash[:datasets][0][:backgroundColor].push("#".concat(SecureRandom.hex(3)))
-            end            
-        render json: return_hash
+            data_hash[:labels].push(asset_type.name)
+            data_hash[:datasets][0][:data].push(asset_type_total)
+        end
+        
+        # create the options hash
+        options_hash = {
+            title: {
+                display: true,
+                text: "#{user.first_name} #{user.last_name}'s actual asset allocation"
+            }
+        }
+        render json: {data: data_hash, options: options_hash}
     end
 
     def update

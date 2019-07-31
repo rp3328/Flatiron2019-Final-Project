@@ -16,6 +16,9 @@ function showDashboard() {
     main.innerHTML = 
     `<h2>User Dashboard</h2>
     <div id=financial-plan> </div>
+    <canvas id="assets-chart" width="400" height="400"></canvas>
+    <canvas id="plan-chart" width="400" height="400"></canvas>
+
     <div id="actions">
 
     </div>
@@ -83,19 +86,47 @@ function showDashboard() {
     })(jQuery);
 
 
-
-    // create the assets chart, showing past value and a projection for future value
+    // create a fetch request to our API to create the assets-chart
     const chartContainer = document.getElementById("assets-chart")
-
-    // create a fetch request to our API for the data on the user's assets
+    
     fetch(`${BASE_URL}/users/${localStorage.user_id}/getValue`)
     .then(res => res.json())
-    .then(data => {
+    .then(response => {
+      chart_data = response["data"]
+      // add coloring to each asset type
+      chart_data["labels"].forEach(function(label) {
+        chart_data["datasets"][0]["backgroundColor"].push(themeColor(label))
+      })
+      
       const assetsChart = new Chart(chartContainer, {
         type: 'pie',
-        data: data
+        data: chart_data,
+        options: response["options"]
       })
     })
+
+    // create a fetch request to our API for the plan-chart
+    const planContainer = document.getElementById("plan-chart")
+
+    fetch(`${BASE_URL}/plans/${localStorage.plan_id}/chart`)
+    .then(res => res.json())
+    .then(response => {
+      chart_data = response['data']
+      // add coloring to each asset type
+      chart_data["labels"].forEach(function(label) {
+        chart_data["datasets"][0]["backgroundColor"].push(themeColor(label))
+      })
+
+      const planChart = new Chart(planContainer, {
+        type: 'pie',
+        data: chart_data,
+        options: response["options"]
+      })
+    })
+
+    
+
+
     
     //logout functionality
     const logoutButton = document.getElementById(`logout-button`)
@@ -106,8 +137,8 @@ function showDashboard() {
     //financial plan view
     const plan = document.getElementById(`financial-plan`)
     plan.innerHTML += `
-    <canvas id="myChart"></canvas>
-    `
+    <canvas id="myChart"></canvas>` // WHY IS THIS HERE?? -- GANESH
+
     //edit financial plan
     const editButton = document.getElementById('edit-button')
     editButton.addEventListener('click', function(){
