@@ -1,25 +1,15 @@
-// function createList(parent, arr){
-//   arr.forEach(function (e){
-//     var li = document.createElement('li'), ul;
-
-//     li.textContent = e.name;
-//     if (e.nest){
-//       ul = document.createElement('ul');
-//       li.appendChild(ul);
-//       createList(ul, e.nest);
-//     }
-//   })
-// }
-
-
 function showDashboard() {
     main.innerHTML = 
-    `<h2>User Dashboard</h2>
+    `
+    <h2 class ="white">User Dashboard</h2>
     <div id=financial-plan> </div>
-    <canvas id="assets-chart" width="400" height="400"></canvas>
-    <canvas id="plan-chart" width="400" height="400"></canvas>
-
-    <div id="actions">
+    <div class="container">
+        <canvas id="assets-chart" width="400" height="400"></canvas>
+    </div>
+    <div class="container">
+        <canvas id="plan-chart" width="400" height="400"></canvas>
+    </div>
+    <div id="actions" class="test">
 
     </div>
     <button id="edit-button">Edit Plan</button>
@@ -161,35 +151,23 @@ function showDashboard() {
     
     localAdapter.getUser()
     .then(data => {
-      console.log(data)
       //calculate networth by asset and total
       let allohash = calType(data.assets)
       let totMon = calTotal(data.assets)
-
-      //calculate allocation percentage of current assets
-      calAllo(allohash, totMon)
-
+      //calculate wanted networth by asset
       let iplan = idealPlan(data.plan, totMon)
+      //compare two value allocation
+      let comResult = compare(allohash, iplan)
 
-      let comResult = compare(allohash, data.plan)
-      // console.log(comResult)
-      let result = solution(comResult)
-      // console.log(result)
-
-      actionDiv.innerHTML += `<h4>Possible Actions:</h4>`
+      //div for Actions
+      actionDiv.innerHTML += `<h4 class="white">Possible Actions:</h4>`
       //create list with id=actionList
       ul = document.createElement('ul')
       ul.setAttribute("id", "actionList")
       actionDiv.appendChild(ul)
-      // console.log(actionDiv)
 
-      //add individual elements for ul
-      // let li = document.createElement('li')
-      // li.appendChild(document.createTextNode("Action 1"))
-      // li.setAttribute("id", "placeholder for action id")
-      // ul.appendChild(li);
       Object.keys(comResult).forEach(function(key) {
-        console.log(key, comResult[key])
+        // console.log(key, comResult[key])
         let li = document.createElement('li')
         if (comResult[key] > 0){
           li.appendChild(document.createTextNode(`${key}: buy $${comResult[key]} more`))
@@ -203,14 +181,5 @@ function showDashboard() {
           ul.appendChild(li);
         }
       })
-      // for( var key in comResult){
-      // }
-      // comResult.forEach(function(e) {
-      //   console.log(e)
-      //   let li = document.createElement('li')
-      // });
-
-
-
     })
 }

@@ -7,14 +7,25 @@
 // const main = document.querySelector('main')
 function showLoginScreen() {
     main.innerHTML = ` 
-    <form id="login-form">
-        Username: 
-        <input type="text" name="username"/><br>
-        Password: 
-        <input type="password" name="password"/><br>
-        <input type="submit"/>
-    </form><br>
-    <button id="signup-button">Sign Up</button>
+    <div class="logimg">
+    <div class="container">
+        <form id="login-form">
+        <body>
+            <h2 class="text-center">Welcome!</h2>
+            <div class="form-group">
+                Username: <input type="text" class="form-control" placeholder="Username" required="required" name="username"/><br>
+            </div>
+            <div class="form-group">
+                Password: <input type="password" class="form-control" placeholder="Password" required="required" name="password"/><br>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block">Log in</button>
+            </div>
+        </form><br>
+        <p class="text-center"><button id="signup-button">Sign Up</button></p>
+        </body>
+    </div>
+    </div>
     `
 
     // submits username and password for logging in through a POST request to /users
@@ -52,26 +63,38 @@ function showLoginScreen() {
 
 // brings up a new user signup page
 function showSignupPage() {
-    main.innerHTML = `<h1>Signup a new user</h1> 
-    <form id="signup-form">
-        First name: 
-        <input type="text" name="first_name"/><br>
-        Last name: 
-        <input type="text" name="last_name"/><br>
-        Username: 
-        <input type="text" name="username"/><br>
-        Email: 
-        <input type="text" name="email"/><br>
-        Phone number: 
-        <input type="text" name="telephone"/><br>
-        Age: 
-        <input type="number" name="age"/><br>
-        Password: 
-        <input type="password" name="password"/><br>
-        Confirm password: 
-        <input type="password" name="password_confirmation"/><br>
-        <input type="submit"/>
-    </form>`
+    main.innerHTML = `
+    <div class="container">
+        <body>     
+            <form id="signup-form" >
+                <h2>Register</h2>
+                <p class="hint-text">Create your account. It's free and only takes a minute.</p>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-6"><input type="text" class="form-control" name="first_name" placeholder="First Name" required="required"></div>
+                        <div class="col-xs-6"><input type="text" class="form-control" name="last_name" placeholder="Last Name" required="required"></div>
+                    </div>    
+                </div>
+                <div class="form-group">
+                    <input type="email" class="form-control" name="email" placeholder="Email" required="required">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="telephone" placeholder="Phone Number" required="required">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="password" placeholder="Password" required="required">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="password_confirmation" placeholder="Confirm Password" required="required">
+                </div>        
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-lg btn-block">Register Now</button>
+                </div>
+            </form>
+            <div class="text-center">Already have an account? <a href="#">Sign in</a></div>
+        </body> 
+    </div>
+    `
 
 // submits information for creating a new user account to /users
     const signupForm = document.getElementById('signup-form')
