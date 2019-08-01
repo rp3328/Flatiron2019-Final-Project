@@ -2,7 +2,6 @@
 function viewProfile(){
     localAdapter.getUser()
     .then(data => {
-        // console.log(data)
         main.innerHTML = `
         <h2> ${data.first_name} ${data.last_name}'s Profile</h2>
         <div class="profile">
@@ -14,7 +13,6 @@ function viewProfile(){
             <button id="edit-profile"> Edit Profile </button>
         </div>
         `
-        
         //back to dashbaord
         const backButton = document.getElementById('back-dashboard')
         backButton.addEventListener('click', function(e){
@@ -252,7 +250,6 @@ function editAssets(){
     //retrieve associated assets with user
     localAdapter.getUser()
     .then(data => {
-        console.log(data.assets[0])
         const user_assets = data.assets
         user_assets.forEach(asset => {assetsTableBody.innerHTML += `
         <tr>
@@ -306,7 +303,6 @@ function editAssets(){
             
             localAdapter.deleteAsset(assetId)
             .then(message => {
-                console.log(message)
                 editAssets()
             })
         }

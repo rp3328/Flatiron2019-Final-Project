@@ -57,7 +57,6 @@ function showLoginScreen() {
             if(!(data.error == null)){
                 showLoginScreen()
             }else{
-                console.log(data)
                 localStorage.setItem("user_id", data.id)
                 localStorage.setItem("plan_id", data.plan.id)
                 showDashboard()

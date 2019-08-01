@@ -19,7 +19,7 @@ const themeColor = function(asset_type=null) {
     } else {
         return palette_with_names[asset_type]
     }
-    return 
+     
 }
 
 document.addEventListener('DOMContentLoaded', function(){

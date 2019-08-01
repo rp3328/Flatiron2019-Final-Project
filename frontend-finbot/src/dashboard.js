@@ -91,7 +91,6 @@ function showDashboard() {
           })
           .then(resp => resp.json())
           .then(message => {
-            console.log(message)
             showDashboard()
           })
           // $.post('http://localhost:3000/get_access_token', {
