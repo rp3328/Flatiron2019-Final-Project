@@ -29,24 +29,26 @@ function viewProfile(){
 
 //edit financial plan
 function editPlan(){
+    localAdapter.getPlan()
+    .then(plan => {
     main.innerHTML = `<h3>Edit Your Plan</h3>
     <form id="edit-plan-form">
         Cash:
-        <input type="number" step="0.001" name="cash"/><br>
+        <input type="number" step="0.001" name="cash" value="${plan.cash}" placeholder="${plan.cash}"/><br>
         Derivatives:
-        <input type="number" step="0.001" name="derivative"/><br>
+        <input type="number" step="0.001" name="derivative" value="${plan.derivative}" placeholder="${plan.derivative}"/><br>
         Equity:
-        <input type="number" step="0.001" name="equity"/><br>
+        <input type="number" step="0.001" name="equity" value="${plan.equity}" placeholder="${plan.equity}"/><br>
         Exchange Traded Funds:
-        <input type="number" step="0.001" name="etf"/><br>
+        <input type="number" step="0.001" name="etf" value="${plan.etf}" placeholder="${plan.etf}"/><br>
         Fixed Income Securities:
-        <input type="number" step="0.001" name="fixed_income"/><br>
+        <input type="number" step="0.001" name="fixed_income" value="${plan.fixed_income}" placeholder="${plan.fixed_income}"/><br>
         Loans:
-        <input type="number" step="0.001" name="loan"/><br>
+        <input type="number" step="0.001" name="loan" value="${plan.loan}" placeholder="${plan.loan}"/><br>
         Mutual Funds:
-        <input type="number" step="0.001" name="mutual_fund"/><br>
+        <input type="number" step="0.001" name="mutual_fund" value="${plan.mutual_fund}" placeholder="${plan.mutual_fund}"/><br>
         Other assets:
-        <input type="number" step="0.001" name="other"/><br>
+        <input type="number" step="0.001" name="other" value="${plan.other}" placeholder="${plan.other}"/><br>
         <input type="submit"/>
     </form>`
     
@@ -76,36 +78,44 @@ function editPlan(){
             "other": other,
             "user_id": localStorage.user_id
         }
+        
 
         localAdapter.patchPlan(plan)
+        .then(data => {
         showDashboard()
+        })
     })
+})
    
 
 }
 
 
 function editProfile(){
+    localAdapter.getUser()
+    // pre-populates form with placeholder text indicating current values
+    .then(user => {
+
     main.innerHTML = `<h3>Edit user</h3> 
     <form id="edit-signup-form">
         First name: 
-        <input type="text" name="first_name"/><br>
+        <input type="text" name="first_name" value="${user.first_name}" placeholder="${user.first_name}"/><br>
         Last name: 
-        <input type="text" name="last_name"/><br>
+        <input type="text" name="last_name" value="${user.last_name}" placeholder="${user.last_name}"/><br>
         Username: 
-        <input type="text" name="username"/><br>
+        <input type="text" name="username" value="${user.username}" placeholder="${user.username}"/><br>
         Email: 
-        <input type="text" name="email"/><br>
+        <input type="text" name="email" value="${user.email}" placeholder="${user.email}"/><br>
         Telephone: 
-        <input type="text" name="telephone"/><br>
+        <input type="text" name="telephone" value="${user.telephone}" placeholder="${user.telephone}"/><br>
         Age: 
-        <input type="number" name="age"/><br>
+        <input type="number" name="age" value="${user.age}" placeholder="${user.age}"/><br>
         Password: 
-        <input type="password" name="password"/><br>
+        <input type="password" name="password" placeholder="*******"/><br>
         Confirm password: 
-        <input type="password" name="password_confirmation"/><br>
+        <input type="password" name="password_confirmation" placeholder="*******"/><br>
         <input type="submit"/>
-    </form>`
+    </form>`        
 
 // edits user info
     const signupForm = document.getElementById('edit-signup-form')
@@ -146,6 +156,7 @@ function editProfile(){
         showDashboard()
         
     })
+})
 }
 
 //edit existing or add to assets
@@ -239,8 +250,10 @@ function editAssets(){
             let assetId = e.target.dataset.id
             
             localAdapter.deleteAsset(assetId)
-            .then(message => console.log(message))
-            editAssets()
+            .then(message => {
+                console.log(message)
+                editAssets()
+            })
         }
     })
 

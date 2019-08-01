@@ -58,8 +58,13 @@ class LocalAdapter {
         .then(resp => resp.json())
     }
 
+    getPlan = () => {
+        return fetch(`${this.baseUrl}/plans/${localStorage.plan_id}`)
+        .then(res => res.json())
+    }
+
     patchPlan = (plan) => {
-        return fetch(`${this.baseUrl}/plans/${plan_id}`,{
+        return fetch(`${this.baseUrl}/plans/${localStorage.plan_id}`,{
             method: "PATCH",
             headers: this.headers,
             body: JSON.stringify(plan)
@@ -68,7 +73,7 @@ class LocalAdapter {
     }
 
     patchUser = (user) => {
-        return fetch(`${BASE_URL}/users/${localStorage.user_id}`, {
+        return fetch(`${this.baseUrl}/users/${localStorage.user_id}`, {
             method: 'PATCH',
             headers: this.headers,
             body: JSON.stringify(
