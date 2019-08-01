@@ -1,8 +1,7 @@
 //view profile
 function viewProfile(){
-    fetch(`${BASE_URL}/users/${localStorage.user_id}`)
-      .then(res => res.json())
-      .then(data => {
+    localAdapter.getUser()
+    .then(data => {
         // console.log(data)
         main.innerHTML = `
         <h1> Username: ${data.username}</h1>
@@ -23,7 +22,7 @@ function viewProfile(){
         editProfileButton.addEventListener('click', function(e){
           editProfile()
         })
-      })
+    })
 }
 
 //edit financial plan
@@ -63,13 +62,8 @@ function editPlan(){
         const loan  = e.target[5].value
         const mutual_fund = e.target[6].value
         const other  = e.target[7].value
-    fetch(`${BASE_URL}/plans/${plan_id}`,{
-        method: "PATCH",
-        headers: {
-            "Content-Type": 'application/json',
-            "Accept": 'application/json'
-        },
-        body: JSON.stringify({
+    
+        const plan = {
             "cash": cash,
             "derivative": derivative,
             "equity": equity,
@@ -79,10 +73,9 @@ function editPlan(){
             "mutual_fund": mutual_fund,
             "other": other,
             "user_id": localStorage.user_id
-        })
-        })
-        .then(res => res.json())
+        }
 
+        localAdapter.patchPlan(plan)
         showDashboard()
     })
    
@@ -147,17 +140,7 @@ function editProfile(){
             "password_confirmation": password_confirmation}
         }
 
-        fetch(`${BASE_URL}/users/${localStorage.user_id}`, {
-            method: 'PATCH',
-            headers: {
-                "Content-Type": 'application/json',
-                "Accept": 'application/json'
-            },
-            body: JSON.stringify(
-                verhash
-            )
-        })
-        .then(res => res.json())
+        localAdapter.patchUser(verhash)
         showDashboard()
         
     })
@@ -199,8 +182,7 @@ function editAssets(){
     const assetForm = document.getElementById("asset-form")
     const assetsTable = document.getElementById("assets-table")
     //retrieve associated assets with user
-    fetch(`${BASE_URL}/users/${localStorage.user_id}`)
-    .then(res => res.json())
+    localAdapter.getUser()
     .then(data => {
         console.log(data.assets[0])
         const user_assets = data.assets
@@ -224,31 +206,26 @@ function editAssets(){
         const cost_basis = e.target[3].value * quantity
         const asset_type = e.target[4].value
 
-        fetch(`${BASE_URL}/assets`,{
-            method: "POST", 
-            headers: {
-                "Content-Type": 'application/json',
-                "Accept": 'application/json'
-            },
-            body: JSON.stringify({
-                "ticker_symbol": ticker_symbol,
-                "name": name,
-                "quantity": quantity,
-                "cost_basis": cost_basis,
-                "asset_type": asset_type,
-                "user_id": localStorage.user_id
-            })
-            })
-            .then(res => res.json())
-            .then(asset => {
+        const asset = {
+            "ticker_symbol": ticker_symbol,
+            "name": name,
+            "quantity": quantity,
+            "cost_basis": cost_basis,
+            "asset_type": asset_type,
+            "user_id": localStorage.user_id
+        }
 
-                // rewrite the DOM 'assets-table' to include the asset
-                assetsTable.innerHTML += `
+        localAdapter.postAsset(asset)
+        .then(asset => {
+
+            // rewrite the DOM 'assets-table' to include the asset
+            assetsTable.innerHTML += `
                 <tr>
                     <td>${asset.ticker_symbol}</td>
                     <td>${asset.quantity}</td>
                     <td>${asset.cost_basis/asset.quantity}</td>
-                    <td><button id="editbtn" data-id=${asset.id}>edit</button></td>`
+                    <td><button id="editbtn" data-id=${asset.id}>edit</button></td>
+                </tr>`
             })
     })// ends the 'submit' eventListener on the asset form
 

@@ -31,13 +31,8 @@ function showFinancialPlan() {
         const loan  = e.target[5].value
         const mutual_fund = e.target[6].value
         const other  = e.target[7].value
-    fetch(`${BASE_URL}/plans`,{
-        method: "POST",
-        headers: {
-            "Content-Type": 'application/json',
-            "Accept": 'application/json'
-        },
-        body: JSON.stringify({
+        
+        plan = {
             "cash": cash,
             "derivative": derivative,
             "equity": equity,
@@ -47,10 +42,9 @@ function showFinancialPlan() {
             "mutual_fund": mutual_fund,
             "other": other,
             "user_id": localStorage.user_id
-        })
-        })
-        .then(res => res.json())
-        .then(data => {
+        }
+
+        localAdapter.postPlan(plan).then(data => {
             localStorage.setItem("plan_id", data.id)
     
         })
@@ -94,7 +88,6 @@ function inputAssets(){
     const assetForm = document.getElementById("asset-form")
     const assetsTable = document.getElementById("assets-table")
 
-    // submits the financial plan form
     assetForm.addEventListener('submit', function(e){
         e.preventDefault()
         const ticker_symbol = e.target[0].value
@@ -103,32 +96,25 @@ function inputAssets(){
         const cost_basis = e.target[3].value * quantity
         const asset_type = e.target[4].value
 
-        fetch(`${BASE_URL}/assets`,{
-            method: "POST", 
-            headers: {
-                "Content-Type": 'application/json',
-                "Accept": 'application/json'
-            },
-            body: JSON.stringify({
-                "ticker_symbol": ticker_symbol,
-                "name": name,
-                "quantity": quantity,
-                "cost_basis": cost_basis,
-                "asset_type": asset_type,
-                "user_id": localStorage.user_id
-            })
-            })
-            .then(res => res.json())
-            .then(asset => {
+        asset = {
+            "ticker_symbol": ticker_symbol,
+            "name": name,
+            "quantity": quantity,
+            "cost_basis": cost_basis,
+            "asset_type": asset_type,
+            "user_id": localStorage.user_id
+        }
 
-                // rewrite the DOM 'assets-table' to include the asset
-                assetsTable.innerHTML += `
-                <tr>
-                    <td>${asset.ticker_symbol}</td>
-                    <td>${asset.name}</td>
-                    <td>${asset.quantity}</td>
-                    <td>${asset.cost_basis/asset.quantity}</td>`
-            })            
+        localAdapter.postAsset(asset).then(asset => {
+
+            // rewrite the DOM 'assets-table' to include the asset
+            assetsTable.innerHTML += `
+            <tr>
+                <td>${asset.ticker_symbol}</td>
+                <td>${asset.name}</td>
+                <td>${asset.quantity}</td>
+                <td>${asset.cost_basis/asset.quantity}</td>`
+        })            
     })// ends the 'submit' eventListener on the asset form
 
     // when the user is finished adding assets, take them to their dashboard

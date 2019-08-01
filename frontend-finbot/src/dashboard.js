@@ -89,8 +89,7 @@ function showDashboard() {
     // create a fetch request to our API to create the assets-chart
     const chartContainer = document.getElementById("assets-chart")
     
-    fetch(`${BASE_URL}/users/${localStorage.user_id}/getValue`)
-    .then(res => res.json())
+    localAdapter.getValue()
     .then(response => {
       chart_data = response["data"]
       // add coloring to each asset type
@@ -108,8 +107,7 @@ function showDashboard() {
     // create a fetch request to our API for the plan-chart
     const planContainer = document.getElementById("plan-chart")
 
-    fetch(`${BASE_URL}/plans/${localStorage.plan_id}/chart`)
-    .then(res => res.json())
+    localAdapter.getPlanChart()
     .then(response => {
       chart_data = response['data']
       // add coloring to each asset type
@@ -123,10 +121,6 @@ function showDashboard() {
         options: response["options"]
       })
     })
-
-    
-
-
     
     //logout functionality
     const logoutButton = document.getElementById(`logout-button`)
@@ -164,8 +158,8 @@ function showDashboard() {
     //locate actions div
     const actionDiv = document.getElementById('actions')
     actionDiv.innerHTML = ""
-    fetch(`${BASE_URL}/users/${localStorage.user_id}`)
-    .then(resp => resp.json())
+    
+    localAdapter.getUser()
     .then(data => {
       console.log(data)
       //calculate networth by asset and total
