@@ -76,10 +76,16 @@ function showSignupPage() {
                     </div>    
                 </div>
                 <div class="form-group">
+                    <input type="text" class="form-control" name="username" placeholder="Username" required="required">
+                </div>
+                <div class="form-group">
                     <input type="email" class="form-control" name="email" placeholder="Email" required="required">
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control" name="telephone" placeholder="Phone Number" required="required">
+                </div>
+                <div class="form-group">
+                    <input type="number" class="form-control" name="age" placeholder="Age" required="required">
                 </div>
                 <div class="form-group">
                     <input type="password" class="form-control" name="password" placeholder="Password" required="required">

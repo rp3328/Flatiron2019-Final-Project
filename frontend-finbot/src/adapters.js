@@ -79,4 +79,12 @@ class LocalAdapter {
         .then(res => res.json())
     }
 
+    deleteAsset = (assetId) => {
+        return fetch(`${this.baseUrl}/assets/${assetId}`, {
+            method: "DELETE",
+            headers: this.headers
+        })
+        .then(resp=> resp.json)
+    }
+
 }

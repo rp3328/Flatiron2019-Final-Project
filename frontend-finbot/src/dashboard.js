@@ -81,16 +81,38 @@ function showDashboard() {
     
     localAdapter.getValue()
     .then(response => {
-      chart_data = response["data"]
+      let chartData = response["data"]
+      let chartOptions = response["options"]
+      
       // add coloring to each asset type
-      chart_data["labels"].forEach(function(label) {
-        chart_data["datasets"][0]["backgroundColor"].push(themeColor(label))
+      chartData["labels"].forEach(function(label) {
+        chartData["datasets"][0]["backgroundColor"].push(themeColor(label))
       })
+
+      // add labelling guidelines to chart_options
+      chartOptions.tooltips = {
+        callbacks: {
+            label: function(tooltipItem, data) {
+                let label = data.labels[tooltipItem.index] || ""
+
+                const totalAssets = data.datasets[0].data
+
+                if (label) {
+                  label += ': $'
+                }
+                debugger
+                // add the total amount
+                label += Math.round(data.datasets[0][tooltipItem.index])
+                label += " ("
+                return label
+            }
+        }
+    }
       
       const assetsChart = new Chart(chartContainer, {
         type: 'pie',
-        data: chart_data,
-        options: response["options"]
+        data: chartData,
+        options: chartOptions
       })
     })
 

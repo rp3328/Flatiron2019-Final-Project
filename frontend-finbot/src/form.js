@@ -192,7 +192,8 @@ function editAssets(){
             <td>${asset.name}</td>
             <td>${asset.quantity}</td>
             <td>${asset.cost_basis/asset.quantity}</td>
-            <td><button id="editbtn" data-id=${asset.id}>edit</button></td>
+            <td><button id="deletebtn" data-id=${asset.id}>delete</button></td>
+
         </tr>`
         })
     })
@@ -224,19 +225,18 @@ function editAssets(){
                     <td>${asset.ticker_symbol}</td>
                     <td>${asset.quantity}</td>
                     <td>${asset.cost_basis/asset.quantity}</td>
-                    <td><button id="editbtn" data-id=${asset.id}>edit</button></td>
+                    <td><button id="deletebtn" data-id=${asset.id}>delete</button></td>
                 </tr>`
             })
     })// ends the 'submit' eventListener on the asset form
 
-    //edit existing assets
+    //Delete an asset (can be re-added, providing effective 'edit' functionality)
     assetsTable.addEventListener('click', function(e){
-        if(e.target.id === "editbtn"){
-            console.log(e.target)
-            fetch(`${BASE_URL}/assets/${e.target.dataset.id}`, {
-                method: "DELETE",
-            })
-            .then(resp=> resp.json)
+        if(e.target.id === "deletebtn"){
+
+            let assetId = e.target.dataset.id
+            
+            localAdapter.deleteAsset(assetId)
             .then(message => console.log(message))
             editAssets()
         }
