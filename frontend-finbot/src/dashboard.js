@@ -1,22 +1,53 @@
 function showDashboard() {
     main.innerHTML = 
     `
-    <h2 class ="white">User Dashboard</h2>
-    <div id=financial-plan> </div>
-    <div class="container">
-        <canvas id="assets-chart" width="400" height="400"></canvas>
-    </div>
-    <div class="container">
-        <canvas id="plan-chart" width="400" height="400"></canvas>
-    </div>
-    <div id="actions" class="test">
+    <nav class="navbar navbar-expand-md" >
+          <img src="https://previews.123rf.com/images/putracetol/putracetol1808/putracetol180801770/106806150-money-logo-icon-design.jpg"  alt="Flowers in Chania" width="120" height="100">
+            <button class="navbar-toggler navbar-dark" type="button" data-toggle="collapse" data-target="#main-navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          <div class="collapse navbar-collapse" id="main-navigation">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">About</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Contact</a>
+              </li>
+            </ul>
+          </div>
+    </nav>
 
+    <body>
+    <h2 class ="ctitle">Allocation Overview</h2>
+    <div class="body">
+      <h2 class="left">Current Allocation:</h2>
+      <div class="container">
+          <canvas id="assets-chart" width="100" height="100"></canvas>
+      </div>
+      <h2 class="left">Target Allocation:</h2>
+      <div class="container">
+          <canvas id="plan-chart" width="400" height="400"></canvas>
+      </div>
+    </div>
+
+
+    <div class="signup">
+      <div id="actions" class="test">
+
+      </div>
     </div>
     <button id="edit-button">Edit Plan</button>
     <button id="asset-button">Edit Assets</button>
     <button id="link-button">Link Account</button>
     <button id="profile-button">View Profile</button>
     <button id="logout-button">Logout</button>
+    </body>
+
+
     `
 
     let plaidOpenHandler = (function($) {
@@ -143,10 +174,10 @@ function showDashboard() {
       localStorage.removeItem('user_id')
       showLoginScreen()
     })
-    //financial plan view
-    const plan = document.getElementById(`financial-plan`)
-    plan.innerHTML += `
-    <canvas id="myChart"></canvas>` // WHY IS THIS HERE?? -- GANESH
+    // //financial plan view
+    // const plan = document.getElementById(`financial-plan`)
+    // plan.innerHTML += `
+    // <canvas id="myChart"></canvas>` // WHY IS THIS HERE?? -- GANESH
 
     //edit financial plan
     const editButton = document.getElementById('edit-button')
@@ -183,7 +214,7 @@ function showDashboard() {
       let iplan = idealPlan(data.plan, totMon)
       //compare two value allocation
       let comResult = compare(allohash, iplan)
-      console.log(allohash)
+      
       //div for Actions
       actionDiv.innerHTML += `<h4 class="white">Possible Actions:</h4>`
       //create list with id=actionList

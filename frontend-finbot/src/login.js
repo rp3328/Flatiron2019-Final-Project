@@ -7,27 +7,29 @@
 // const main = document.querySelector('main')
 function showLoginScreen() {
     main.innerHTML = ` 
+
     <div class="logimg">
     <div class="body">
         <form id="login-form">
         <body>
-            <div class="title">
+            <div class="ctitle">
                 <h2 class="text-center">Welcome!</h2>
             </div>
             <div class="form-group">
-                Username: <input type="text" class="form-control" placeholder="Username" required="required" name="username"/><br>
+                Username: <input type="text" class="form-control" placeholder="Username" required="required" name="username"/>
             </div>
             <div class="form-group">
-                Password: <input type="password" class="form-control" placeholder="Password" required="required" name="password"/><br>
+                Password: <input type="password" class="form-control" placeholder="Password" required="required" name="password"/>
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-block">Log in</button>
             </div>
-        </form><br>
-        <p class="text-center"><button id="signup-button">Sign Up</button></p>
+        </form>
+            <p class="text-center"><button id="signup-button">Sign Up</button></p>
         </body>
     </div>
     </div>
+
     `
 
     // submits username and password for logging in through a POST request to /users
@@ -70,8 +72,11 @@ function showSignupPage() {
     <div class="body">
         <body>     
             <form id="signup-form" >
-                <h2>Register</h2>
+                <div class="signup">
+                    <h2 class="ctitle">Register</h2>
                 <p class="hint-text">Create your account. It's free and only takes a minute.</p>
+                
+                <br>
                 <div class="form-group">
                     <div class="row">
                         <div class="col-xs-6"><input type="text" class="form-control" name="first_name" placeholder="First Name" required="required"></div>
@@ -100,7 +105,10 @@ function showSignupPage() {
                     <button type="submit" class="btn btn-success btn-lg btn-block">Register Now</button>
                 </div>
             </form>
-            <div class="text-center">Already have an account? <a id="back" href="#">Sign in</a></div>
+ 
+                <div class="text-center">Already have an account? <a id="back" href="#">Sign in</a></div>
+      
+            </div>
         </body> 
     </div>
     </div>

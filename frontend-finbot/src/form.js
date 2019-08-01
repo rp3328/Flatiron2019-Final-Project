@@ -4,13 +4,15 @@ function viewProfile(){
     .then(data => {
         // console.log(data)
         main.innerHTML = `
-        <h1> Username: ${data.username}</h1>
-        <h2> FullName: ${data.first_name} ${data.last_name}</h2>
-        <h2> Email: ${data.email}</h2>
-        <h2> Telephone: ${data.telephone}</h2>
-        <h2> Age: ${data.age}</h2>
-        <button id="back-dashboard"> DashBoard</button>
-        <button id="edit-profile"> Edit Profile </button>
+        <h2> ${data.first_name} ${data.last_name}'s Profile</h2>
+        <div class="profile">
+            <h3> Username: ${data.username}</h3> 
+            <h3> Email: ${data.email}</h3>
+            <h3> Telephone: ${data.telephone}</h3>
+            <h3> Age: ${data.age}</h3>
+            <button id="back-dashboard"> DashBoard</button>
+            <button id="edit-profile"> Edit Profile </button>
+        </div>
         `
         
         //back to dashbaord
@@ -27,7 +29,7 @@ function viewProfile(){
 
 //edit financial plan
 function editPlan(){
-    main.innerHTML = `<h1>Edit Your Plan</h1>
+    main.innerHTML = `<h3>Edit Your Plan</h3>
     <form id="edit-plan-form">
         Cash:
         <input type="number" step="0.001" name="cash"/><br>
@@ -84,7 +86,7 @@ function editPlan(){
 
 
 function editProfile(){
-    main.innerHTML = `<h1>Edit user</h1> 
+    main.innerHTML = `<h3>Edit user</h3> 
     <form id="edit-signup-form">
         First name: 
         <input type="text" name="first_name"/><br>
@@ -149,7 +151,7 @@ function editProfile(){
 //edit existing or add to assets
 function editAssets(){ 
     //render assets template
-    main.innerHTML = `<h1>Edit Assets</h1> 
+    main.innerHTML = `<h3>Edit Assets</h3> 
     <form id="asset-form">
         Ticker: 
         <input type="text" step="0.001" name="ticker_symbol"/><br>

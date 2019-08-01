@@ -1,15 +1,35 @@
-/* .test{
-    display: table-cell;
-    vertical-align: middle;
-} */
+/* general */
 
-
+h1 {
+    font-size:50px;
+}
+ 
+h3 {
+    font-size:22px;
+    display: inline;
+    /* default values */
+    font-weight: bold;
+}
 
 ul {
     list-style-type: circle;
+    list-style-position: inside;
     background: white;
     padding: 20px;
 }
+
+body{  
+    font-family:Georgia, Arial, Helvetica, Sans-serif,serif;
+    font-size:15px;
+    color:#000;
+}
+
+canvas{
+
+    width:600px !important;
+    height:600px !important;
+    
+  }
 
 .white {
     background: white;
@@ -31,6 +51,7 @@ ul {
     font-size:20px;
     color:#000;
   }
+
 .title {
     display: flex;
     flex-flow: row wrap;
@@ -39,24 +60,60 @@ ul {
     font-size: 40px;
     color: rgb(244, 242, 248);
 }
+
+/* specific */
+
+.login {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    border-style: solid;
+    font-family:Georgia, Arial, Helvetica, Sans-serif,serif;
+    font-size:20px;
+    color:#000;
+
+    /* background-image: url("img/test1.jpg"); */
+    /* background-size: 100%; */
+  }
+
+.profile {
+    display: flex;
+    flex-flow: column wrap;
+    border-style: solid;
+    font-family:Georgia, Arial, Helvetica, Sans-serif,serif;
+    font-size:20px;
+    color:#000;
+  }
+
+  .signup {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: left;
+    border-style: solid;
+    font-family:Georgia, Arial, Helvetica;
+    font-size:20px;
+    color:#000;
+    background: white;
+    padding: 20px;
+  }
+
+  .ctitle {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    font-family: "Arial Black", Gadget, sans-serif;
+    font-size: 40px;
+    color: black;
+}
+
+.left{
+    align-items: left;
+    float: left;
+}
+  
   
 /* temp css */
-body{  
-    font-family:Georgia, Arial, Helvetica, Sans-serif,serif;
-    font-size:15px;
-    color:#000;
-}
- 
-h1 {
-    font-size:50px;
-}
- 
-h3 {
-    font-size:22px;
-}
 
-
- 
 #content-wrapper {
     width:960px;
     text-align:left;
@@ -91,3 +148,52 @@ h3 {
     padding: 15px;
     clear:both;
 }
+
+
+
+.navbar {
+    background: darkblue;
+  }
+  .nav-link,
+  .navbar-brand {
+    color: #fff;
+    cursor: pointer;
+  }
+  .nav-link {
+    margin-right: 1em !important;
+  }
+  .nav-link:hover {
+    color: #000;
+  }
+  .navbar-collapse {
+    justify-content: flex-end;
+  }
+  
+  .overlay {
+    position: absolute;
+    min-height: 100%;
+    min-width: 100%;
+    left: 0;
+    top: 0;
+    background: rgba(0, 0, 0, 0.6);
+  }
+
+
+  .features {
+    margin: 4em auto;
+    padding: 1em;
+    position: relative;
+  }
+  .feature-title {
+    color: #333;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+  .features img {
+    -webkit-box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+    margin-bottom: 16px;
+  }
