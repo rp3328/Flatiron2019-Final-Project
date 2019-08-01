@@ -99,29 +99,55 @@ class UsersController < ApplicationController
         access_token = exchange_token_response['access_token']
         item_id = exchange_token_response['item_id']
 
-        # create a Credential object to store the user's login credentials
-        credential = Credential.create(access_token: access_token, item_id: item_id, user: User.find(params['user_id']))
-
-        # add each of the user's holdings as Asset objects
-        investments = client.investments.holdings.get(access_token)
-        securities = investments['securities']
-        holdings = investments['holdings']
-        
-        holdings.each do |holding|
-            security = securities.find do |sec|
-                sec.security_id == holding.security_id
-            end
-            Asset.create(
-                ticker_symbol: security["ticker_symbol"],
-                name: security["name"],
-                quantity: holding["quantity"],
-                close_price: security["close_price"],
-                cost_basis: holding["cost_basis"],
-                asset_type_id: AssetType.find_by(name: security["type"]).id,
-                user_id: params["user_id"]
-            )
+        # ensure the user has not used these credentials before
+        # store the name of each account in an array called account_names
+        response = client.accounts.get(access_token)
+        account_names = response[:accounts].map do |account|
+            account.name
         end
-        render json: {}
+        # loop through each of the user's existing credentials to see if the array matches account_names
+        # get the user's credentials
+        user = User.find(params['user_id'])
+        credentials = user.credentials
+        duplicate_credentials = false
+
+        credentials.each do |credential|
+            account_names_comp = client.accounts.get(credential.access_token).accounts.map do |account|
+                account.name
+            end
+            byebug
+            if account_names_comp == account_names
+                duplicate_credentials = true
+            end
+        end
+
+        if duplicate_credentials == false
+            # create a Credential object to store the user's login credentials
+            Credential.create(access_token: access_token, item_id: item_id, user: User.find(params['user_id']))
+
+            # add each of the user's holdings as Asset objects
+            investments = client.investments.holdings.get(access_token)
+            securities = investments['securities']
+            holdings = investments['holdings']
+            
+            holdings.each do |holding|
+                security = securities.find do |sec|
+                    sec.security_id == holding.security_id
+                end
+                Asset.create(
+                    ticker_symbol: security["ticker_symbol"],
+                    name: security["name"],
+                    quantity: holding["quantity"],
+                    close_price: security["close_price"],
+                    cost_basis: holding["cost_basis"],
+                    asset_type_id: AssetType.find_by(name: security["type"]).id,
+                    user_id: params["user_id"]
+                )
+            end
+            render json: {message: "Credentials successfully entered"}
+        else
+            render json: {message: "Duplicate credentials entered!"}
+        end
     end
 
     private 

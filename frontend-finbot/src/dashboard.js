@@ -42,10 +42,25 @@ function showDashboard() {
           // The metadata object contains info about the institution the
           // user selected and the account ID or IDs, if the
           // Select Account view is enabled.
-          $.post('http://localhost:3000/get_access_token', {
-            public_token: public_token,
-            user_id: localStorage.user_id
-          });
+          fetch("http://localhost:3000/get_access_token", {
+            method: "POST",
+            headers: {
+              "Content-Type": 'application/json'
+            },
+            body: JSON.stringify({
+              public_token: public_token,
+              user_id: localStorage.user_id
+            })
+          })
+          .then(resp => resp.json())
+          .then(message => {
+            console.log(message)
+            showDashboard()
+          })
+          // $.post('http://localhost:3000/get_access_token', {
+          //   public_token: public_token,
+          //   user_id: localStorage.user_id
+          // });
         },
         onExit: function(err, metadata) {
           // The user exited the Link flow.
@@ -185,7 +200,10 @@ function showDashboard() {
 
     // link button
     const linkButton = document.getElementById('link-button')
-    linkButton.addEventListener('click', plaidOpenHandler)
+    linkButton.addEventListener('click', () => {
+      plaidOpenHandler()
+
+    })
 
     //view user data
     const viewButton = document.getElementById('profile-button')
