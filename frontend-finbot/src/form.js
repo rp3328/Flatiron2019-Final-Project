@@ -36,7 +36,7 @@ function editPlan(){
         <body>     
             <form id="edit-plan-form" >
                 <div class="signup">
-                    <h2 class="ctitle">Setup a financial plan</h2>
+                    <h2 class="ctitle">Edit your financial plan</h2>
                 <p class="hint-text">Make changes to your financial plan by inputting the fraction of assets that should be invested in each category. All categories must add up to 1.</p>
                 
                 <br>
@@ -77,8 +77,6 @@ function editPlan(){
                 </div>
             </form>
  
-                <div class="text-center">Already have an account? <a id="back" href="#">Sign in</a></div>
-      
             </div>`
     
     //retrieve plan id specific to user

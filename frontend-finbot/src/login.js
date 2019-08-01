@@ -4,15 +4,16 @@
 
 // brings up the user login page
 
+{/* <div class = "alert alert-warning alert-dismissable">
+<button type = "button" class = "close" data-dismiss = "alert" aria-hidden = "true">
+&times;
+</button>
+Warning! Wrong password or username.
+</div> */}
 // const main = document.querySelector('main')
 function showLoginScreen() {
     main.innerHTML = ` 
-    <div class = "alert alert-warning alert-dismissable">
-        <button type = "button" class = "close" data-dismiss = "alert" aria-hidden = "true">
-        &times;
-        </button>
-        Warning! Wrong password or username.
-    </div>
+
 
     <div class="logimg">
     <div class="body">
