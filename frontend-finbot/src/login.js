@@ -29,6 +29,7 @@ function showLoginScreen() {
     </div>
     </div>
     `
+
     // submits username and password for logging in through a POST request to /users
     const loginForm = document.getElementById('login-form')
     const signupButton = document.getElementById('signup-button')
@@ -37,19 +38,12 @@ function showLoginScreen() {
         e.preventDefault()
         const username = e.target[0].value
         const password = e.target[1].value
-
-        fetch(`${BASE_URL}/login`, {
-            method: 'POST',
-            headers: {
-                "Content-Type": 'application/json'
-            },
-            body: JSON.stringify({
-                "username": username,
-                "password": password
-            })
-        })
-        .then(res => res.json())
-        .then(data => {
+        const body = {
+            "username": username,
+            "password": password
+        }
+        
+        localAdapter.postLogin(body).then(data => {
             // if the login request is successful
             
             if(!(data.error == null)){
@@ -85,10 +79,16 @@ function showSignupPage() {
                     </div>    
                 </div>
                 <div class="form-group">
+                    <input type="text" class="form-control" name="username" placeholder="Username" required="required">
+                </div>
+                <div class="form-group">
                     <input type="email" class="form-control" name="email" placeholder="Email" required="required">
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control" name="telephone" placeholder="Phone Number" required="required">
+                </div>
+                <div class="form-group">
+                    <input type="number" class="form-control" name="age" placeholder="Age" required="required">
                 </div>
                 <div class="form-group">
                     <input type="password" class="form-control" name="password" placeholder="Password" required="required">
@@ -120,23 +120,18 @@ function showSignupPage() {
         const password = e.target[6].value
         const password_confirmation  = e.target[7].value
 
-        fetch(`${BASE_URL}/users`, {
-            method: 'POST',
-            headers: {
-                "Content-Type": 'application/json'
-            },
-            body: JSON.stringify({
-                "first_name": first_name,
-                "last_name": last_name,
-                "username": username,
-                "email": email,
-                "telephone": telephone,
-                "age": age,
-                "password": password,
-                "password_confirmation": password_confirmation
-            })
-        })
-        .then(res => res.json())
+        attributes = {
+            "first_name": first_name,
+            "last_name": last_name,
+            "username": username,
+            "email": email,
+            "telephone": telephone,
+            "age": age,
+            "password": password,
+            "password_confirmation": password_confirmation
+        }
+
+        localAdapter.postUser(attributes)
         .then(data => {
             // if the login request is successful
             localStorage.setItem("user_id", data.id)

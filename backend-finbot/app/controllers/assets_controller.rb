@@ -10,7 +10,7 @@ class AssetsController < ApplicationController
 
         close_price = HTTParty.get("#{iex_datapoint_url}/#{params[:ticker_symbol]}/QUOTE-LATESTPRICE?&token=#{iex_api_key}").response.body.to_f
         asset = Asset.create(ticker_symbol: params[:ticker_symbol], name: params[:name], quantity: params[:quantity], close_price: close_price, cost_basis: params[:cost_basis], user_id: params[:user_id], asset_type_id: asset_type_id)
-        render json: asset, include: [:asset_types]
+        render json: asset, include: [:asset_type]
     end
 
     def show

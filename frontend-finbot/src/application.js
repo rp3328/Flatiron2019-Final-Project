@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:3000"
+const localAdapter = new LocalAdapter("http://localhost:3000")
 const main = document.querySelector('main')
 const themeColor = function(asset_type=null) {
     const palette_without_names = ["#479698", "#3d7fae", "#012d4f", "#a9b4c1", "#dbe4e7"]
@@ -27,13 +27,7 @@ document.addEventListener('DOMContentLoaded', function(){
     showLoginScreen()
     if(typeof(parseInt(localStorage.getItem('user_id'))) === "integer") {
         // if the user ID is found, that means we've logged in
-        const userId = localStorage.getItem('user_id')
-
-        fetch(`${BASE_URL}/users/${userId}`)
-        .then(res => res.json())
-        .then(user => {
-            showDashboard(user)
-        })
+        showDashboard(user)
 
     } else {
         // go back to the login screen with an error message

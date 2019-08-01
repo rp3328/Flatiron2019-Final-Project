@@ -79,27 +79,47 @@ function showDashboard() {
     // create a fetch request to our API to create the assets-chart
     const chartContainer = document.getElementById("assets-chart")
     
-    fetch(`${BASE_URL}/users/${localStorage.user_id}/getValue`)
-    .then(res => res.json())
+    localAdapter.getValue()
     .then(response => {
-      chart_data = response["data"]
+      let chartData = response["data"]
+      let chartOptions = response["options"]
+      
       // add coloring to each asset type
-      chart_data["labels"].forEach(function(label) {
-        chart_data["datasets"][0]["backgroundColor"].push(themeColor(label))
+      chartData["labels"].forEach(function(label) {
+        chartData["datasets"][0]["backgroundColor"].push(themeColor(label))
       })
+
+      // add labelling guidelines to chart_options
+      chartOptions.tooltips = {
+        callbacks: {
+            label: function(tooltipItem, data) {
+                let label = data.labels[tooltipItem.index] || ""
+
+                const totalAssets = data.datasets[0].data
+
+                if (label) {
+                  label += ': $'
+                }
+                debugger
+                // add the total amount
+                label += Math.round(data.datasets[0][tooltipItem.index])
+                label += " ("
+                return label
+            }
+        }
+    }
       
       const assetsChart = new Chart(chartContainer, {
         type: 'pie',
-        data: chart_data,
-        options: response["options"]
+        data: chartData,
+        options: chartOptions
       })
     })
 
     // create a fetch request to our API for the plan-chart
     const planContainer = document.getElementById("plan-chart")
 
-    fetch(`${BASE_URL}/plans/${localStorage.plan_id}/chart`)
-    .then(res => res.json())
+    localAdapter.getPlanChart()
     .then(response => {
       chart_data = response['data']
       // add coloring to each asset type
@@ -150,8 +170,8 @@ function showDashboard() {
     //locate actions div
     const actionDiv = document.getElementById('actions')
     actionDiv.innerHTML = ""
-    fetch(`${BASE_URL}/users/${localStorage.user_id}`)
-    .then(resp => resp.json())
+    
+    localAdapter.getUser()
     .then(data => {
       //calculate networth by asset and total
       let allohash = calType(data.assets)
