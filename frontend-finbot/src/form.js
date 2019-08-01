@@ -31,26 +31,55 @@ function viewProfile(){
 function editPlan(){
     localAdapter.getPlan()
     .then(plan => {
-    main.innerHTML = `<h3>Edit Your Plan</h3>
-    <form id="edit-plan-form">
-        Cash:
-        <input type="number" step="0.001" name="cash" value="${plan.cash}" placeholder="${plan.cash}"/><br>
-        Derivatives:
-        <input type="number" step="0.001" name="derivative" value="${plan.derivative}" placeholder="${plan.derivative}"/><br>
-        Equity:
-        <input type="number" step="0.001" name="equity" value="${plan.equity}" placeholder="${plan.equity}"/><br>
-        Exchange Traded Funds:
-        <input type="number" step="0.001" name="etf" value="${plan.etf}" placeholder="${plan.etf}"/><br>
-        Fixed Income Securities:
-        <input type="number" step="0.001" name="fixed_income" value="${plan.fixed_income}" placeholder="${plan.fixed_income}"/><br>
-        Loans:
-        <input type="number" step="0.001" name="loan" value="${plan.loan}" placeholder="${plan.loan}"/><br>
-        Mutual Funds:
-        <input type="number" step="0.001" name="mutual_fund" value="${plan.mutual_fund}" placeholder="${plan.mutual_fund}"/><br>
-        Other assets:
-        <input type="number" step="0.001" name="other" value="${plan.other}" placeholder="${plan.other}"/><br>
-        <input type="submit"/>
-    </form>`
+    main.innerHTML = `<div class="logimg">
+    <div class="body">
+        <body>     
+            <form id="edit-plan-form" >
+                <div class="signup">
+                    <h2 class="ctitle">Setup a financial plan</h2>
+                <p class="hint-text">Make changes to your financial plan by inputting the fraction of assets that should be invested in each category. All categories must add up to 1.</p>
+                
+                <br>
+                <div class="form-group">
+                    <label for="cash-field">Cash:</label>
+                    <input id="cash-field" min="0" max="1" type="number" step="0.01" class="form-control" name="cash" value="${plan.cash}" required="required">
+                </div>
+                <div class="form-group">
+                    <label for="derivative-field">Derivatives:</label>
+                    <input id="derivative-field" min="0" max="1" type="number" step="0.01" class="form-control" name="derivative" value="${plan.derivative}" required="required">
+                </div>
+                <div class="form-group">
+                    <label for="equity-field">Equities:</label>
+                    <input id="equity-field" min="0" max="1" type="number" step="0.01" class="form-control" name="equity" value="${plan.equity}" required="required">
+                </div>
+                <div class="form-group">
+                    <label for="etf-field">Exchange Traded Funds (ETFs):</label>
+                    <input id="etf-field" min="0" max="1" type="number" step="0.01" class="form-control" name="etf" value="${plan.etf}" required="required">
+                </div>
+                <div class="form-group">
+                    <label for="fixed_income-field">Fixed Income Products (e.g., bonds):</label>
+                    <input id="fixed_income-field" min="0" max="1" type="number" step="0.01" class="form-control" name="fixed_income" value="${plan.fixed_income}" required="required">
+                </div>
+                <div class="form-group">
+                    <label for="loan-field">Loans:</label>
+                    <input id="loan-field" min="0" max="1" type="number" step="0.01" class="form-control" name="loan" value="${plan.loan}" required="required">
+                </div>
+                <div class="form-group">
+                    <label for="mutual_fund-field">Mutual Funds:</label>
+                    <input id="mutual_fund-field" min="0" max="1" type="number" step="0.01" class="form-control" name="mutual_fund" value="${plan.mutual_fund}" required="required">
+                </div>
+                <div class="form-group">
+                    <label for="other-field">Other Assets:</label>
+                    <input id="other-field" min="0" max="1" type="number" step="0.01" class="form-control" name="other" value="${plan.other}" required="required">
+                </div>               
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-lg btn-block">Update Plan</button>
+                </div>
+            </form>
+ 
+                <div class="text-center">Already have an account? <a id="back" href="#">Sign in</a></div>
+      
+            </div>`
     
     //retrieve plan id specific to user
     const plan_id = localStorage.plan_id
@@ -162,51 +191,78 @@ function editProfile(){
 //edit existing or add to assets
 function editAssets(){ 
     //render assets template
-    main.innerHTML = `<h3>Edit Assets</h3> 
-    <form id="asset-form">
-        Ticker: 
-        <input type="text" step="0.001" name="ticker_symbol"/><br>
-        Name: 
-        <input type="text" step="0.001" name="name"/><br>
-        Number of shares: 
-        <input type="number" step="0.001" name="quantity"/><br>
-        Purchase price per share: 
-        <input type="number" step="0.001" name="cost_basis_per_share"/><br>
-        
-        Asset Type: 
-        <select name="asset_type" >
-            <option value="equity">equity</option>
-        </select><br>
-        <input type="submit"/>
-    </form>
-    <button id="assets-done">Finished adding assets</button>
-    <br>
-        
-    <table id="assets-table">
-    <tr>
-    <th>Ticker symbol</th>
-    <th>Name</th>
-    <th>Number of shares</th>
-    <th>Purchase price per share</th>
-    </tr>
-    
-    </table>`
+    main.innerHTML = `
+    <div class="logimg">
+    <div class="body">
+        <body>     
+            <form id="asset-form" >
+                <div class="signup">
+                    <h2 class="ctitle">Input equity holdings</h2>
+                <p class="hint-text">Use this form to manually update your equity assets. If you prefer to link your account and create assets automatically, you may do so from the dashboard </p>
+                
+                <br>
+                <div class="form-group">
+                    <label for="ticker-field">Ticker Symbol:</label>
+                    <input id="ticker-field" type="text" class="form-control" name="ticker_symbol" required="required">
+                </div>
+                <div class="form-group">
+                    <label for="name-field">Company name:</label>
+                    <input id="name-field" type="text" class="form-control" name="name" required="required">
+                </div>
+                <div class="form-group">
+                    <label for="quantity-field">Number of shares held:</label>
+                    <input id="ticker-field" type="number" min="0" step="0.01" class="form-control" name="quantity" required="required">
+                </div>
+                <div class="form-group">
+                    <label for="cost_basis-field">Cost basis per share:</label>
+                    <input id="cost_basis-field" type="number" min="0" step="0.01" class="form-control" name="cost_basis_per_share" required="required">
+                </div>
+                <div class="form-group">
+                    <label for="asset_type-field">Asset Type:</label>
+                    <select id="asset_type-field" class="form-control" name="ticker_symbol" required="required">
+                        <option value="equity">equity</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-md btn-inline">Add an asset</button>
+                </div>
+                <div class="form-group">
+                    <button id="assets-done" type="button" class="btn btn-success btn-md btn-inline">Finished adding assets</button>
+                </div>
+            </form>
+            <br>
+
+            <table id="assets-table" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Ticker symbol</th>
+                        <th>Name</th>
+                        <th>Number of shares</th>
+                        <th>Purchase price per share</th>
+                    </tr>
+                </thead>
+                <tbody id="assets-table-body">
+                </tbody>
+            </table>
+ 
+            <div class="text-center">Already have an account? <a id="back" href="#">Sign in</a></div>
+      
+            </div>`
 
     const assetForm = document.getElementById("asset-form")
-    const assetsTable = document.getElementById("assets-table")
+    const assetsTableBody = document.getElementById("assets-table-body")
     //retrieve associated assets with user
     localAdapter.getUser()
     .then(data => {
         console.log(data.assets[0])
         const user_assets = data.assets
-        user_assets.forEach(asset => {assetsTable.innerHTML += `
+        user_assets.forEach(asset => {assetsTableBody.innerHTML += `
         <tr>
             <td>${asset.ticker_symbol}</td>
             <td>${asset.name}</td>
             <td>${asset.quantity}</td>
-            <td>${asset.cost_basis/asset.quantity}</td>
-            <td><button id="deletebtn" data-id=${asset.id}>delete</button></td>
-
+            <td>${(asset.cost_basis/asset.quantity).toFixed(2)}</td>
+            <td><button id="deletebtn" type="button" class="btn btn-danger" data-id=${asset.id}>delete</button></td>
         </tr>`
         })
     })
@@ -233,18 +289,19 @@ function editAssets(){
         .then(asset => {
 
             // rewrite the DOM 'assets-table' to include the asset
-            assetsTable.innerHTML += `
+            assetsTableBody.innerHTML += `
                 <tr>
                     <td>${asset.ticker_symbol}</td>
+                    <td>${asset.name}</td>
                     <td>${asset.quantity}</td>
-                    <td>${asset.cost_basis/asset.quantity}</td>
-                    <td><button id="deletebtn" data-id=${asset.id}>delete</button></td>
+                    <td>${(asset.cost_basis/asset.quantity).toFixed(2)}</td>
+                    <td><button id="deletebtn" type="button" class="btn btn-danger" data-id=${asset.id}>delete</button></td>
                 </tr>`
             })
     })// ends the 'submit' eventListener on the asset form
 
     //Delete an asset (can be re-added, providing effective 'edit' functionality)
-    assetsTable.addEventListener('click', function(e){
+    assetsTableBody.addEventListener('click', function(e){
         if(e.target.id === "deletebtn"){
 
             let assetId = e.target.dataset.id

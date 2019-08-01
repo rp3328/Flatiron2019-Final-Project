@@ -1,25 +1,56 @@
 // brings up a form for creating a financial plan
 function showFinancialPlan() {
-    main.innerHTML = `<h1>Setup New Plan</h1>
-    <form id="plan-form">
-        Cash:
-        <input type="number" step="0.001" name="cash"/><br>
-        Derivatives:
-        <input type="number" step="0.001" name="derivative"/><br>
-        Equity:
-        <input type="number" step="0.001" name="equity"/><br>
-        ETF:
-        <input type="number" step="0.001" name="etf"/><br>
-        Fixed Income:
-        <input type="number" step="0.001" name="fixed_income"/><br>
-        Loans:
-        <input type="number" step="0.001" name="loan"/><br>
-        Mutual Funds:
-        <input type="number" step="0.001" name="mutual_fund"/><br>
-        Other:
-        <input type="number" step="0.001" name="other"/><br>
-        <input type="submit"/>
-    </form>`
+    main.innerHTML = `
+    <div class="logimg">
+    <div class="body">
+        <body>     
+            <form id="plan-form" >
+                <div class="signup">
+                    <h2 class="ctitle">Setup a financial plan</h2>
+                <p class="hint-text">Create your financial plan. Input the fraction of assets that should be invested in each category. All categories must add up to 1.</p>
+                
+                <br>
+                <div class="form-group">
+                    <label for="cash-field">Cash:</label>
+                    <input id="cash-field" min="0" max="1" type="number" step="0.01" class="form-control" name="cash" required="required">
+                </div>
+                <div class="form-group">
+                    <label for="derivative-field">Derivatives:</label>
+                    <input id="derivative-field" min="0" max="1" type="number" step="0.01" class="form-control" name="derivative" required="required">
+                </div>
+                <div class="form-group">
+                    <label for="equity-field">Equities:</label>
+                    <input id="equity-field" min="0" max="1" type="number" step="0.01" class="form-control" name="equity" required="required">
+                </div>
+                <div class="form-group">
+                    <label for="etf-field">Exchange Traded Funds (ETFs):</label>
+                    <input id="etf-field" min="0" max="1" type="number" step="0.01" class="form-control" name="etf" required="required">
+                </div>
+                <div class="form-group">
+                    <label for="fixed_income-field">Fixed Income Products (e.g., bonds):</label>
+                    <input id="fixed_income-field" min="0" max="1" type="number" step="0.01" class="form-control" name="fixed_income" required="required">
+                </div>
+                <div class="form-group">
+                    <label for="loan-field">Loans:</label>
+                    <input id="loan-field" min="0" max="1" type="number" step="0.01" class="form-control" name="loan" required="required">
+                </div>
+                <div class="form-group">
+                    <label for="mutual_fund-field">Mutual Funds:</label>
+                    <input id="mutual_fund-field" min="0" max="1" type="number" step="0.01" class="form-control" name="mutual_fund" required="required">
+                </div>
+                <div class="form-group">
+                    <label for="other-field">Other Assets:</label>
+                    <input id="other-field" min="0" max="1" type="number" step="0.01" class="form-control" name="other" required="required">
+                </div>               
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success btn-lg btn-block">Create Plan</button>
+                </div>
+            </form>
+ 
+                <div class="text-center">Already have an account? <a id="back" href="#">Sign in</a></div>
+      
+            </div>
+            `
     const planForm = document.getElementById('plan-form')
     planForm.addEventListener('submit', function(e){
         e.preventDefault()
@@ -54,37 +85,66 @@ function showFinancialPlan() {
     
 
 function inputAssets(){
-    main.innerHTML = `<h1>Setup New Plan</h1> 
-    <form id="asset-form">
-        Ticker: 
-        <input type="text" step="0.001" name="ticker_symbol"/><br>
-        Name: 
-        <input type="text" step="0.001" name="name"/><br>
-        Shares: 
-        <input type="number" step="0.001" name="quantity"/><br>
-        Cost basis per share: 
-        <input type="number" step="0.001" name="cost_basis_per_share"/><br>
-        Asset Type: 
-        <select name="asset_type" >
-            <option value="equity">equity</option>
-        </select><br>
-        <input type="submit"/>
-    </form>
-    <button id="assets-done">Finished adding assets</button>
-    <br>
-        
-    <table id="assets-table">
-    <tr>
-    <th>Ticker symbol</th>
-    <th>Name</th>
-    <th>Number of shares</th>
-    <th>Purchase price per share</th>
-    </tr>
-    
-    </table>`
+    main.innerHTML = `
+    <div class="logimg">
+    <div class="body">
+        <body>     
+            <form id="asset-form" >
+                <div class="signup">
+                    <h2 class="ctitle">Input equity holdings</h2>
+                <p class="hint-text">Use this form to manually input your equity assets. If you prefer to link your account and create assets automatically, you may do so from the dashboard </p>
+                
+                <br>
+                <div class="form-group">
+                    <label for="ticker-field">Ticker Symbol:</label>
+                    <input id="ticker-field" type="text" class="form-control" name="ticker_symbol" required="required">
+                </div>
+                <div class="form-group">
+                    <label for="name-field">Company name:</label>
+                    <input id="name-field" type="text" class="form-control" name="name" required="required">
+                </div>
+                <div class="form-group">
+                    <label for="quantity-field">Number of shares held:</label>
+                    <input id="ticker-field" type="number" min="0" step="0.01" class="form-control" name="quantity" required="required">
+                </div>
+                <div class="form-group">
+                    <label for="cost_basis-field">Cost basis per share:</label>
+                    <input id="cost_basis-field" type="number" min="0" step="0.01" class="form-control" name="cost_basis_per_share" required="required">
+                </div>
+                <div class="form-group">
+                    <label for="asset_type-field">Asset Type:</label>
+                    <select id="asset_type-field" class="form-control" name="ticker_symbol" required="required">
+                        <option value="equity">equity</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-md btn-inline">Add an asset</button>
+                </div>
+                <div class="form-group">
+                    <button id="assets-done" type="button" class="btn btn-success btn-md btn-inline">Finished adding assets</button>
+                </div>
+            </form>
+            <br>
+
+            <table id="assets-table" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Ticker symbol</th>
+                        <th>Name</th>
+                        <th>Number of shares</th>
+                        <th>Purchase price per share</th>
+                    </tr>
+                </thead>
+                <tbody id="assets-table-body">
+                </tbody>
+            </table>
+ 
+            <div class="text-center">Already have an account? <a id="back" href="#">Sign in</a></div>
+      
+            </div>`
 
     const assetForm = document.getElementById("asset-form")
-    const assetsTable = document.getElementById("assets-table")
+    const assetsTableBody = document.getElementById("assets-table-body")
 
     assetForm.addEventListener('submit', function(e){
         e.preventDefault()
@@ -106,12 +166,13 @@ function inputAssets(){
         localAdapter.postAsset(asset).then(asset => {
 
             // rewrite the DOM 'assets-table' to include the asset
-            assetsTable.innerHTML += `
+            assetsTableBody.innerHTML += `
             <tr>
                 <td>${asset.ticker_symbol}</td>
                 <td>${asset.name}</td>
                 <td>${asset.quantity}</td>
-                <td>${asset.cost_basis/asset.quantity}</td>`
+                <td>${(asset.cost_basis/asset.quantity).toFixed(2)}</td>
+            </tr>`
         })            
     })// ends the 'submit' eventListener on the asset form
 
