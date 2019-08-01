@@ -8,10 +8,12 @@
 function showLoginScreen() {
     main.innerHTML = ` 
     <div class="logimg">
-    <div class="container">
+    <div class="body">
         <form id="login-form">
         <body>
-            <h2 class="text-center">Welcome!</h2>
+            <div class="title">
+                <h2 class="text-center">Welcome!</h2>
+            </div>
             <div class="form-group">
                 Username: <input type="text" class="form-control" placeholder="Username" required="required" name="username"/><br>
             </div>
@@ -70,7 +72,8 @@ function showLoginScreen() {
 // brings up a new user signup page
 function showSignupPage() {
     main.innerHTML = `
-    <div class="container">
+    <div class="logimg">
+    <div class="body">
         <body>     
             <form id="signup-form" >
                 <h2>Register</h2>
@@ -97,8 +100,9 @@ function showSignupPage() {
                     <button type="submit" class="btn btn-success btn-lg btn-block">Register Now</button>
                 </div>
             </form>
-            <div class="text-center">Already have an account? <a href="#">Sign in</a></div>
+            <div class="text-center">Already have an account? <a id="back" href="#">Sign in</a></div>
         </body> 
+    </div>
     </div>
     `
 
@@ -139,6 +143,13 @@ function showSignupPage() {
             showFinancialPlan()
         })
     }) // ends the eventListener for submitting new user data
+
+    //sends user back to login screen
+    const backForm = document.getElementById(`back`)
+    backForm.addEventListener('click', function(e){
+        showLoginScreen()
+    })
+
 } // ends showSignupPage
 
 

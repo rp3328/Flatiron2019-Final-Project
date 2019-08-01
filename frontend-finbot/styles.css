@@ -3,6 +3,8 @@
     vertical-align: middle;
 } */
 
+
+
 ul {
     list-style-type: circle;
     background: white;
@@ -16,8 +18,28 @@ ul {
 
 .logimg{
     background-image: url("img/test1.jpg");
+    background-size: 100%;
 }
 
+
+.body {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    border-style: solid;
+    font-family:Georgia, Arial, Helvetica, Sans-serif,serif;
+    font-size:20px;
+    color:#000;
+  }
+.title {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    font-family: Impact, 'Arial Bold', sans-serif;
+    font-size: 40px;
+    color: rgb(244, 242, 248);
+}
+  
 /* temp css */
 body{  
     font-family:Georgia, Arial, Helvetica, Sans-serif,serif;
