@@ -3,8 +3,10 @@ function calType(assets){
     nhash = {1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0}
 
     assets.forEach(asset => {
-      let sum = asset.close_price * asset.quantity
-      nhash[asset.asset_type_id] += sum
+      // console.log(nhash[asset.asset_type_id])
+      // console.log(asset.close_price)
+      var sum1 = asset.close_price * asset.quantity
+      nhash[asset.asset_type_id] += sum1
     })
 
     return nhash

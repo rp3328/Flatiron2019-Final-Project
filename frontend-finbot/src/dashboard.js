@@ -180,7 +180,7 @@ function showDashboard() {
       let iplan = idealPlan(data.plan, totMon)
       //compare two value allocation
       let comResult = compare(allohash, iplan)
-
+      console.log(allohash)
       //div for Actions
       actionDiv.innerHTML += `<h4 class="white">Possible Actions:</h4>`
       //create list with id=actionList

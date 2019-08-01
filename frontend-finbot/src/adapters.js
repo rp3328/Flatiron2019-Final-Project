@@ -65,7 +65,6 @@ class LocalAdapter {
             body: JSON.stringify(plan)
             })
             .then(res => res.json())
-    
     }
 
     patchUser = (user) => {
