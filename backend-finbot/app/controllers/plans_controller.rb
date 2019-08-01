@@ -41,10 +41,9 @@ class PlansController < ApplicationController
 
             else
             data_hash[:labels].push(asset_type)
-            data_hash[:datasets][0][:data].push(value)
+            data_hash[:datasets][0][:data].push(value*100)
             end
         end
-
         # create the options hash
         options_hash = {
             title: {

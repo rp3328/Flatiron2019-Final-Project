@@ -21,7 +21,7 @@ function showDashboard() {
 
     let plaidOpenHandler = (function($) {
       var handler = Plaid.create({
-        clientName: 'Plaid Quickstart',
+        clientName: 'Advise.ly',
         // Optional, specify an array of ISO-3166-1 alpha-2 country
         // codes to initialize Link; European countries will have GDPR
         // consent panel
@@ -97,7 +97,7 @@ function showDashboard() {
 
                 const totalAssets = data.datasets[0].data.reduce((a,b) => a+b, 0)
                 const assetTypeValue = data.datasets[0].data[tooltipItem.index]
-                const percentage = assetTypeValue/totalAssets.toFixed(2)
+                const percentage = (assetTypeValue/totalAssets).toFixed(2)
 
                 if (label) {
                   label += ': $'
@@ -124,16 +124,40 @@ function showDashboard() {
 
     localAdapter.getPlanChart()
     .then(response => {
-      chart_data = response['data']
+      chartData = response['data']
       // add coloring to each asset type
-      chart_data["labels"].forEach(function(label) {
-        chart_data["datasets"][0]["backgroundColor"].push(themeColor(label))
+      chartData["labels"].forEach(function(label) {
+        chartData["datasets"][0]["backgroundColor"].push(themeColor(label))
       })
+
+      chartOptions = response['options']
+
+      // add labelling guidelines to chart_options
+      chartOptions.tooltips = {
+        callbacks: {
+            label: function(tooltipItem, data) {
+                let label = data.labels[tooltipItem.index] || ""
+
+                const percentage = data.datasets[0].data[tooltipItem.index]
+              
+                if (label) {
+                  label += ': '
+                }
+                // add the percentage from plan
+      
+                label += percentage
+                label += "% of total assets"
+                return label
+            }
+        }
+    }
+
+
 
       const planChart = new Chart(planContainer, {
         type: 'pie',
-        data: chart_data,
-        options: response["options"]
+        data: chartData,
+        options: chartOptions
       })
     })
     
