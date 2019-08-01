@@ -95,15 +95,18 @@ function showDashboard() {
             label: function(tooltipItem, data) {
                 let label = data.labels[tooltipItem.index] || ""
 
-                const totalAssets = data.datasets[0].data
+                const totalAssets = data.datasets[0].data.reduce((a,b) => a+b, 0)
+                const assetTypeValue = data.datasets[0].data[tooltipItem.index]
+                const percentage = assetTypeValue/totalAssets.toFixed(2)
 
                 if (label) {
                   label += ': $'
                 }
-                debugger
                 // add the total amount
-                label += Math.round(data.datasets[0][tooltipItem.index])
+                label += Math.round(assetTypeValue)
                 label += " ("
+                label += percentage*100
+                label += "% of total assets)"
                 return label
             }
         }
