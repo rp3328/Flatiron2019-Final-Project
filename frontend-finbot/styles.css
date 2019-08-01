@@ -108,9 +108,22 @@ canvas{
 
 .left{
     align-items: left;
-    float: left;
+    display: inline-block;
+}
+
+.center{
+    align-items: center  !important; 
+    display: inline-block;
 }
   
+.dashbody {
+    display: flex;
+    flex-flow: column wrap;
+    border-style: solid;
+    font-family:Georgia, Arial, Helvetica, Sans-serif,serif;
+    font-size:20px;
+    color:#000;
+  }
   
 /* temp css */
 
@@ -156,7 +169,7 @@ canvas{
   }
   .nav-link,
   .navbar-brand {
-    color: #fff;
+    color: orange;
     cursor: pointer;
   }
   .nav-link {
@@ -169,31 +182,4 @@ canvas{
     justify-content: flex-end;
   }
   
-  .overlay {
-    position: absolute;
-    min-height: 100%;
-    min-width: 100%;
-    left: 0;
-    top: 0;
-    background: rgba(0, 0, 0, 0.6);
-  }
 
-
-  .features {
-    margin: 4em auto;
-    padding: 1em;
-    position: relative;
-  }
-  .feature-title {
-    color: #333;
-    font-size: 1.3rem;
-    font-weight: 700;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-  }
-  .features img {
-    -webkit-box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
-    -moz-box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
-    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
-    margin-bottom: 16px;
-  }

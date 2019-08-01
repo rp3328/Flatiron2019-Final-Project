@@ -7,6 +7,12 @@
 // const main = document.querySelector('main')
 function showLoginScreen() {
     main.innerHTML = ` 
+    <div class = "alert alert-warning alert-dismissable">
+        <button type = "button" class = "close" data-dismiss = "alert" aria-hidden = "true">
+        &times;
+        </button>
+        Warning! Wrong password or username.
+    </div>
 
     <div class="logimg">
     <div class="body">
@@ -27,9 +33,8 @@ function showLoginScreen() {
         </form>
             <p class="text-center"><button id="signup-button">Sign Up</button></p>
         </body>
+        </div>
     </div>
-    </div>
-
     `
 
     // submits username and password for logging in through a POST request to /users
@@ -74,7 +79,7 @@ function showSignupPage() {
             <form id="signup-form" >
                 <div class="signup">
                     <h2 class="ctitle">Register</h2>
-                <p class="hint-text">Create your account. It's free and only takes a minute.</p>
+                <p class="hint-text">Create your account. We will make you rich.</p>
                 
                 <br>
                 <div class="form-group">

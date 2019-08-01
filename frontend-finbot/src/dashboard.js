@@ -2,51 +2,57 @@ function showDashboard() {
     main.innerHTML = 
     `
     <nav class="navbar navbar-expand-md" >
-          <img src="https://previews.123rf.com/images/putracetol/putracetol1808/putracetol180801770/106806150-money-logo-icon-design.jpg"  alt="Flowers in Chania" width="120" height="100">
-            <button class="navbar-toggler navbar-dark" type="button" data-toggle="collapse" data-target="#main-navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
+          <img src="https://ui-ex.com/images/transparent-logo-money-1.png"  alt="Error wrong" width="120" height="100">
           <div class="collapse navbar-collapse" id="main-navigation">
             <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link" href="#">Home</a>
+            <li class="nav-item" id="profile-button">
+              <h6 class="nav-link" >Profile</h6>
+            </li>
+              <li class="nav-item" id="edit-button">
+                <h6 class="nav-link" >Edit Plan</h6>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
+              <li class="nav-item" id="asset-button">
+                <h6 class="nav-link" >Edit Assets</h6>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Contact</a>
+              <li class="nav-item" id="link-button">
+                <h6 class="nav-link" >Link Assets</h6>
+              </li>
+              <li class="nav-item" id="logout-button">
+                <h6 class="nav-link" >Logout</h6>
               </li>
             </ul>
           </div>
     </nav>
 
     <body>
-    <h2 class ="ctitle">Allocation Overview</h2>
-    <div class="body">
-      <h2 class="left">Current Allocation:</h2>
       <div class="container">
-          <canvas id="assets-chart" width="100" height="100"></canvas>
+            <h2 class ="ctitle">Allocation Overview</h2>
+        <div class="dashbody">
+
+      
+          
+            <h2>Current Allocation:</h2>
+              <div class="col-lg-4 col-md-4 col-sm-12">
+                <canvas class="center" id="assets-chart" width="100" height="100"></canvas>
+              </div>
+          
+  
+            <h2>Target Allocation:</h2>
+              <div class="col-lg-4 col-md-4 col-sm-12">
+                <canvas class="center" id="plan-chart" width="400" height="400"></canvas>
+              </div>
+
+
+         <hr size="10">
+            <div id="actions" class="test">
+            </div>
+   
+
       </div>
-      <h2 class="left">Target Allocation:</h2>
-      <div class="container">
-          <canvas id="plan-chart" width="400" height="400"></canvas>
-      </div>
+
     </div>
-
-
-    <div class="signup">
-      <div id="actions" class="test">
-
-      </div>
-    </div>
-    <button id="edit-button">Edit Plan</button>
-    <button id="asset-button">Edit Assets</button>
-    <button id="link-button">Link Account</button>
-    <button id="profile-button">View Profile</button>
-    <button id="logout-button">Logout</button>
-    </body>
-
+    <br>
+  </body>
 
     `
 
