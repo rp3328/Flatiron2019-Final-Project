@@ -1,6 +1,7 @@
 function showDashboard() {
     main.innerHTML = 
     `
+  <div class="lightblue">
     <nav class="navbar navbar-expand-md" >
           <img src="https://ui-ex.com/images/transparent-logo-money-1.png"  alt="Error wrong" width="120" height="100">
           <div class="collapse navbar-collapse" id="main-navigation">
@@ -53,7 +54,7 @@ function showDashboard() {
     </div>
     <br>
   </body>
-
+  </div>
     `
 
     let plaidOpenHandler = (function($) {

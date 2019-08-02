@@ -36,6 +36,11 @@ canvas{
     padding: 20px;
 }
 
+.lightblue {
+  background: lightblue;
+  padding: 20px;
+}
+
 .logimg{
     background-image: url("img/test1.jpg");
     background-size: 100%;
@@ -83,6 +88,7 @@ canvas{
     font-family:Georgia, Arial, Helvetica, Sans-serif,serif;
     font-size:20px;
     color:#000;
+    background: white;
   }
 
   .signup {
@@ -123,6 +129,7 @@ canvas{
     font-family:Georgia, Arial, Helvetica, Sans-serif,serif;
     font-size:20px;
     color:#000;
+    background: white;
   }
   
 /* temp css */

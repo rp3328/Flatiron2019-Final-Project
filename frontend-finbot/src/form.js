@@ -3,14 +3,16 @@ function viewProfile(){
     localAdapter.getUser()
     .then(data => {
         main.innerHTML = `
-        <h2 align="center"> ${data.first_name} ${data.last_name}'s Profile</h2>
-        <div class="profile">
-            <h3> Username: ${data.username}</h3> 
-            <h3> Email: ${data.email}</h3>
-            <h3> Telephone: ${data.telephone}</h3>
-            <h3> Age: ${data.age}</h3>
-                <button id="back-dashboard" class="btn btn-success btn-lg btn-block"> DashBoard</button>
-                <button id="edit-profile" class="btn btn-success btn-lg btn-block"> Edit Profile </button>
+        <div class="lightblue">
+                <h2 align="center"> ${data.first_name} ${data.last_name}'s Profile</h2>
+                <div class="profile">
+                    <h3> Username: ${data.username}</h3> 
+                    <h3> Email: ${data.email}</h3>
+                    <h3> Telephone: ${data.telephone}</h3>
+                    <h3> Age: ${data.age}</h3>
+                        <button id="back-dashboard" class="btn btn-success btn-lg btn-block"> DashBoard</button>
+                        <button id="edit-profile" class="btn btn-success btn-lg btn-block"> Edit Profile </button>
+                </div>
         </div>
         `
         //back to dashbaord
