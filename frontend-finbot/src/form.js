@@ -108,7 +108,7 @@ function editPlan(){
         localAdapter.patchPlan(plan)
         .then(data => {
             if(!(data.error == null)){
-                const planForm = document.getElementById('plan-form')
+                const planForm = document.getElementById('edit-plan-form')
                 alertError(planForm, data.error)
             }else{
                 showDashboard()
