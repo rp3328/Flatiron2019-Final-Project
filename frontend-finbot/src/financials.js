@@ -76,10 +76,15 @@ function showFinancialPlan() {
         }
 
         localAdapter.postPlan(plan).then(data => {
-            localStorage.setItem("plan_id", data.id)
-    
+            // if the post request is successful
+            if(!(data.error == null)){
+                const planForm = document.getElementById('plan-form')
+                alertError(planForm, data.error)
+            }else{
+                localStorage.setItem("plan_id", data.id)
+                inputAssets()
+            }
         })
-        inputAssets()
     })
  }
     
@@ -164,6 +169,11 @@ function inputAssets(){
         }
 
         localAdapter.postAsset(asset).then(asset => {
+             // if the post request is successful
+             if(!(asset.error == null)){
+                const assetForm = document.getElementById('asset-form')
+                alertError(assetForm, asset.error)
+            }else{
 
             // rewrite the DOM 'assets-table' to include the asset
             assetsTableBody.innerHTML += `
@@ -173,6 +183,7 @@ function inputAssets(){
                 <td>${asset.quantity}</td>
                 <td>${(asset.cost_basis/asset.quantity).toFixed(2)}</td>
             </tr>`
+            }
         })            
     })// ends the 'submit' eventListener on the asset form
 

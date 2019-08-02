@@ -11,7 +11,7 @@ class UsersController < ApplicationController
         if user && user.authenticate(params[:password])
             render json: user, include: [:plan, :actions]
         else
-            render json: { error: "We cannot recognize this username/password combination" }, status: 401
+            render json: { error: "We cannot recognize this username/password combination. Please try again." }, status: 401
         end
     end
 
@@ -21,8 +21,7 @@ class UsersController < ApplicationController
         if user.valid?
             render json: user
         else
-            flash[:error] = user.errors.full_messages
-            render :new
+            render json: { error: "There was an error in creating your user account. Accounts must have a first name, last name, and username. Usernames must be unique. Somebody may have taken your username. Try another!" }, status: 401
         end
     end
 
@@ -75,11 +74,12 @@ class UsersController < ApplicationController
     end
 
     def update
-        user = User.find(params[:id])
+        user = User.find(params[:id]).update
         if user.update(user_params)
+            user.update(user_params)
             render json: user, include: [:assets, :plan, :actions]
         else
-            render json: user, include: [:assets, :plan, :actions]
+            render json: { error: "There was an error in updating your user account. Accounts must have a first name, last name, and username. Usernames must be unique. Somebody may have taken your username. Try another!" }, status: 401
         end
     end
 
