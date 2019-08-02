@@ -125,10 +125,15 @@ function editProfile(){
     // pre-populates form with placeholder text indicating current values
     .then(user => {
 
-    main.innerHTML = `<h3>Edit user</h3> 
-<body>
-    <form id="edit-signup-form">
-        <div class="signup">
+    main.innerHTML = `
+    <div class="logimg">
+    <body>
+        <form id="edit-signup-form">
+            <div class="signup">
+                <h2 class="ctitle">Edit your profile</h2>
+                <p class="hint-text">Use this form to manually update your user profile. </p>
+            
+            <br>
             <div class="form-group">
                 First name: 
                 <input type="text" name="first_name" value="${user.first_name}" placeholder="${user.first_name}"/><br>
@@ -162,12 +167,13 @@ function editProfile(){
                 <input type="password" name="password_confirmation" placeholder="*******"/><br>
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-success btn-lg btn-block">Update Plan</button>
+                <button type="submit" class="btn btn-success btn-lg btn-block">Update profile</button>
             </div>
-             
-        </div>
-    </form>
-</body>`        
+            </div>
+                
+        </form>
+    </body>
+    </div>`        
 
 // edits user info
     const signupForm = document.getElementById('edit-signup-form')
