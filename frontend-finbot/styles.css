@@ -38,7 +38,8 @@ canvas{
 
 .lightblue {
   background: lightblue;
-  padding: 20px;
+  
+  border: none !important;
 }
 
 .logimg{

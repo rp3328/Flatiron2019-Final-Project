@@ -32,13 +32,13 @@ function showDashboard() {
 
       
           
-            <h2>Current Allocation:</h2>
+            <h2> Current Allocation:</h2>
               <div class="col-lg-4 col-md-4 col-sm-12">
                 <canvas class="center" id="assets-chart" width="100" height="100"></canvas>
               </div>
           
   
-            <h2>Target Allocation:</h2>
+            <h2> Target Allocation:</h2>
               <div class="col-lg-4 col-md-4 col-sm-12">
                 <canvas class="center" id="plan-chart" width="400" height="400"></canvas>
               </div>
@@ -190,7 +190,7 @@ function showDashboard() {
             label: function(tooltipItem, data) {
                 let label = data.labels[tooltipItem.index] || ""
 
-                const percentage = data.datasets[0].data[tooltipItem.index]
+                const percentage = data.datasets[0].data[tooltipItem.index].toFixed(2)
               
                 if (label) {
                   label += ': '
