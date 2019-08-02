@@ -273,11 +273,11 @@ function showDashboard() {
         // console.log(key, comResult[key])
         let li = document.createElement('li')
         if (comResult[key] > 0){
-          li.appendChild(document.createTextNode(`${key}: buy $${comResult[key]} more`))
+          li.appendChild(document.createTextNode(`${key}: buy $${comResult[key].toFixed(2)} more`))
           ul.appendChild(li);
         } else if(comResult[key] < 0 ){
           comResult[key] = Math.abs(comResult[key])
-          li.appendChild(document.createTextNode(`${key}: sell $${comResult[key]} more`))
+          li.appendChild(document.createTextNode(`${key}: sell $${comResult[key].toFixed(2)} more`))
           ul.appendChild(li);
         } else {
           li.appendChild(document.createTextNode(`${key}: do nothing`))

@@ -3,7 +3,7 @@ function viewProfile(){
     localAdapter.getUser()
     .then(data => {
         main.innerHTML = `
-        <h2> ${data.first_name} ${data.last_name}'s Profile</h2>
+        <h2 align="center"> ${data.first_name} ${data.last_name}'s Profile</h2>
         <div class="profile">
             <h3> Username: ${data.username}</h3> 
             <h3> Email: ${data.email}</h3>
@@ -122,25 +122,48 @@ function editProfile(){
     .then(user => {
 
     main.innerHTML = `<h3>Edit user</h3> 
+<body>
     <form id="edit-signup-form">
-        First name: 
-        <input type="text" name="first_name" value="${user.first_name}" placeholder="${user.first_name}"/><br>
-        Last name: 
-        <input type="text" name="last_name" value="${user.last_name}" placeholder="${user.last_name}"/><br>
-        Username: 
-        <input type="text" name="username" value="${user.username}" placeholder="${user.username}"/><br>
-        Email: 
-        <input type="text" name="email" value="${user.email}" placeholder="${user.email}"/><br>
-        Telephone: 
-        <input type="text" name="telephone" value="${user.telephone}" placeholder="${user.telephone}"/><br>
-        Age: 
-        <input type="number" name="age" value="${user.age}" placeholder="${user.age}"/><br>
-        Password: 
-        <input type="password" name="password" placeholder="*******"/><br>
-        Confirm password: 
-        <input type="password" name="password_confirmation" placeholder="*******"/><br>
-        <input type="submit"/>
-    </form>`        
+        <div class="signup">
+            <div class="form-group">
+                First name: 
+                <input type="text" name="first_name" value="${user.first_name}" placeholder="${user.first_name}"/><br>
+            </div>
+            <div class="form-group">
+                Last name: 
+                <input type="text" name="last_name" value="${user.last_name}" placeholder="${user.last_name}"/><br>
+            </div>
+            <div class="form-group">
+                Username: 
+                <input type="text" name="username" value="${user.username}" placeholder="${user.username}"/><br>
+            </div>
+            <div class="form-group">
+                Email: 
+                <input type="text" name="email" value="${user.email}" placeholder="${user.email}"/><br>
+            </div>
+            <div class="form-group">
+                Telephone: 
+                <input type="text" name="telephone" value="${user.telephone}" placeholder="${user.telephone}"/><br>
+            </div>
+            <div class="form-group">
+                Age: 
+                <input type="number" name="age" value="${user.age}" placeholder="${user.age}"/><br>
+            </div>
+            <div class="form-group">
+                Password: 
+                <input type="password" name="password" placeholder="*******"/><br>
+            </div>
+            <div class="form-group">
+                Confirm password: 
+                <input type="password" name="password_confirmation" placeholder="*******"/><br>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-success btn-lg btn-block">Update Plan</button>
+            </div>
+             
+        </div>
+    </form>
+</body>`        
 
 // edits user info
     const signupForm = document.getElementById('edit-signup-form')

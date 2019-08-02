@@ -115,7 +115,7 @@ class UsersController < ApplicationController
             account_names_comp = client.accounts.get(credential.access_token).accounts.map do |account|
                 account.name
             end
-            byebug
+      
             if account_names_comp == account_names
                 duplicate_credentials = true
             end
