@@ -7,7 +7,12 @@ class PlansController < ApplicationController
 
     def create
         plan = Plan.create(plan_params)
-        render json: plan
+
+        if plan.valid?
+            render json: plan
+        else
+            render json: { error: "There was an error in creating your financial plan. #{plan.errors.messages[:base][0]}" }, status: 401
+        end
     end
 
     def show
@@ -17,10 +22,11 @@ class PlansController < ApplicationController
 
     def update
         plan = Plan.find(params[:id])
-        if plan.update(plan_params)
+        plan.update(plan_params)
+        if plan.valid?
             render json: plan
         else
-            render json: plan
+            render json: { error: "There was an error in updating your financial plan. #{plan.errors.messages[:base][0]}" }, status: 401
         end
     end
 

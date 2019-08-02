@@ -76,10 +76,15 @@ function showFinancialPlan() {
         }
 
         localAdapter.postPlan(plan).then(data => {
-            localStorage.setItem("plan_id", data.id)
-    
+            // if the post request is successful
+            if(!(data.error == null)){
+                const planForm = document.getElementById('plan-form')
+                alertError(planForm, data.error)
+            }else{
+                localStorage.setItem("plan_id", data.id)
+                inputAssets()
+            }
         })
-        inputAssets()
     })
  }
     
@@ -164,6 +169,8 @@ function inputAssets(){
         }
 
         localAdapter.postAsset(asset).then(asset => {
+
+            
 
             // rewrite the DOM 'assets-table' to include the asset
             assetsTableBody.innerHTML += `

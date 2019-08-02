@@ -8,9 +8,9 @@ const themeColor = function(asset_type=null) {
         "equity": "#012d4f",
         "etf": "#a9b4c1",
         "fixed_income": "#dbe4e7",
-        "loan": "#479698",
-        "mutual fund": "#3d7fae",
-        "other":  "#012d4f"
+        "loan": "#353a47",
+        "mutual fund": "#8ae9c1",
+        "other":  "#13262f"
     }
     let i=1 
     if(asset_type === null) {
