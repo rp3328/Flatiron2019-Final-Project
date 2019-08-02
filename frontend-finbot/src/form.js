@@ -9,8 +9,8 @@ function viewProfile(){
             <h3> Email: ${data.email}</h3>
             <h3> Telephone: ${data.telephone}</h3>
             <h3> Age: ${data.age}</h3>
-            <button id="back-dashboard"> DashBoard</button>
-            <button id="edit-profile"> Edit Profile </button>
+                <button id="back-dashboard" class="btn btn-success btn-lg btn-block"> DashBoard</button>
+                <button id="edit-profile" class="btn btn-success btn-lg btn-block"> Edit Profile </button>
         </div>
         `
         //back to dashbaord
@@ -107,12 +107,16 @@ function editPlan(){
 
         localAdapter.patchPlan(plan)
         .then(data => {
-        showDashboard()
+            if(!(data.error == null)){
+                const planForm = document.getElementById('edit-plan-form')
+                alertError(planForm, data.error)
+            }else{
+                showDashboard()
+            }
         })
     })
 })
    
-
 }
 
 
@@ -201,8 +205,14 @@ function editProfile(){
         }
 
         localAdapter.patchUser(verhash)
-        showDashboard()
-        
+        .then(data => {
+            if(!(data.error == null)){
+                const signupForm = document.getElementById('edit-signup-form')
+                alertError(signupForm, data.error)
+            }else{
+                showDashboard()
+            }
+        })
     })
 })
 }
@@ -305,7 +315,10 @@ function editAssets(){
 
         localAdapter.postAsset(asset)
         .then(asset => {
-
+            if(!(asset.error == null)){
+                const assetForm = document.getElementById('asset-form')
+                alertError(assetForm, asset.error)
+            }else{
             // rewrite the DOM 'assets-table' to include the asset
             assetsTableBody.innerHTML += `
                 <tr>
@@ -315,7 +328,8 @@ function editAssets(){
                     <td>${(asset.cost_basis/asset.quantity).toFixed(2)}</td>
                     <td><button id="deletebtn" type="button" class="btn btn-danger" data-id=${asset.id}>delete</button></td>
                 </tr>`
-            })
+            }
+        })
     })// ends the 'submit' eventListener on the asset form
 
     //Delete an asset (can be re-added, providing effective 'edit' functionality)

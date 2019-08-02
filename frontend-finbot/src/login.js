@@ -8,9 +8,20 @@
 <button type = "button" class = "close" data-dismiss = "alert" aria-hidden = "true">
 &times;
 </button>
-Warning! Wrong password or username.
+We do not recognize that username/password combination. Please try again.
 </div> */}
-// const main = document.querySelector('main')
+
+function alertError(element_below_error, errorText) {
+    const alertHTML = `
+    <div class = "alert alert-warning alert-dismissable fade show" role="alert">
+        <button type = "button" class = "close" data-dismiss = "alert">
+        &times;
+        </button>
+        <h6>${errorText}</h6>
+    </div>
+    `
+    element_below_error.insertAdjacentHTML('beforebegin', alertHTML)
+}
 function showLoginScreen() {
     main.innerHTML = ` 
 
@@ -55,7 +66,8 @@ function showLoginScreen() {
             // if the login request is successful
             
             if(!(data.error == null)){
-                showLoginScreen()
+                const loginForm = document.getElementById('login-form')
+                alertError(loginForm, data.error)
             }else{
                 localStorage.setItem("user_id", data.id)
                 localStorage.setItem("plan_id", data.plan.id)
@@ -95,7 +107,7 @@ function showSignupPage() {
                     <input type="email" class="form-control" name="email" placeholder="Email" required="required">
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" name="telephone" placeholder="Phone Number" required="required">
+                    <input type="tel" class="form-control" name="telephone" placeholder="Phone Number" required="required">
                 </div>
                 <div class="form-group">
                     <input type="number" class="form-control" name="age" placeholder="Age" required="required">
@@ -146,9 +158,14 @@ function showSignupPage() {
 
         localAdapter.postUser(attributes)
         .then(data => {
-            // if the login request is successful
+            // if the signup request is successful
+            if(!(data.error == null)){
+                const signupForm = document.getElementById('signup-form')
+                alertError(signupForm, data.error)
+            }else{
             localStorage.setItem("user_id", data.id)
             showFinancialPlan()
+            }
         })
     }) // ends the eventListener for submitting new user data
 

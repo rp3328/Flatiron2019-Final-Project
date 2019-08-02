@@ -111,7 +111,7 @@ canvas{
     display: inline-block;
 }
 
-.center{
+#center{
     align-items: center  !important; 
     display: inline-block;
 }
