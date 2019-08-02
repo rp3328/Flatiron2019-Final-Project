@@ -169,8 +169,11 @@ function inputAssets(){
         }
 
         localAdapter.postAsset(asset).then(asset => {
-
-            
+             // if the post request is successful
+             if(!(asset.error == null)){
+                const assetForm = document.getElementById('asset-form')
+                alertError(assetForm, asset.error)
+            }else{
 
             // rewrite the DOM 'assets-table' to include the asset
             assetsTableBody.innerHTML += `
@@ -180,6 +183,7 @@ function inputAssets(){
                 <td>${asset.quantity}</td>
                 <td>${(asset.cost_basis/asset.quantity).toFixed(2)}</td>
             </tr>`
+            }
         })            
     })// ends the 'submit' eventListener on the asset form
 

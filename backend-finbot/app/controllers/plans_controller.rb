@@ -7,7 +7,6 @@ class PlansController < ApplicationController
 
     def create
         plan = Plan.create(plan_params)
-
         if plan.valid?
             render json: plan
         else

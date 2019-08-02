@@ -3,8 +3,10 @@ class Asset < ApplicationRecord
 
     belongs_to :asset_type
     belongs_to :user
-
     has_many :actions
+
+    validates :close_price, presence: true
+    
 
     def update_close_price
         if self.ticker_symbol == "USD"
@@ -13,13 +15,24 @@ class Asset < ApplicationRecord
 
         else
         iex_url = 'https://cloud.iexapis.com/stable/stock/'
-        response = JSON.parse(HTTParty.get("#{iex_url}/#{self.ticker_symbol}/quote?&token=#{Figaro.env.iex_public_key}").body)
-        price = response["latestPrice"]
-            if price.is_a?(Float)
-                self.update(close_price: price)
-            else
+        response = HTTParty.get("#{iex_url}/#{self.ticker_symbol}/quote?&token=#{Figaro.env.iex_public_key}").body
+            if valid_json?(response)
+            parsed_response = JSON.parse(response)
+            price = parsed_response["latestPrice"]
+                if price.is_a?(Float)
+                    self.update(close_price: price)
+                else
+                end
+            else 
             end
         end
+    end
+
+    def valid_json?(json)
+        JSON.parse(json)
+        return true
+      rescue JSON::ParserError => e
+        return false
     end
 
 

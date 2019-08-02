@@ -66,7 +66,6 @@ function showLoginScreen() {
             // if the login request is successful
             
             if(!(data.error == null)){
-                showLoginScreen()
                 const loginForm = document.getElementById('login-form')
                 alertError(loginForm, data.error)
             }else{
