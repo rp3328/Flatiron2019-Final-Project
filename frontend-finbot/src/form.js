@@ -129,6 +129,7 @@ function editProfile(){
 
     main.innerHTML = `
     <div class="logimg">
+    <div class="body">
     <body>
         <form id="edit-signup-form">
             <div class="signup">
@@ -175,6 +176,7 @@ function editProfile(){
                 
         </form>
     </body>
+    </div>
     </div>`        
 
 // edits user info
